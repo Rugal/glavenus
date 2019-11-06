@@ -3,7 +3,6 @@ package ga.rugal.pt.core.entity;
 import static config.SystemDefaultProperty.SCHEMA;
 
 import java.time.Instant;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;

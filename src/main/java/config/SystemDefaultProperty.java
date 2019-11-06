@@ -10,4 +10,6 @@ public interface SystemDefaultProperty {
   String ENCODING = "UTF-8";
 
   String SCHEMA = "pt";
+
+  String STAR = "*";
 }
