@@ -1,0 +1,193 @@
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/RugalBernstein/template/1.0.0
+
+info:
+  description: This is a simple API
+  version: 1.0.0
+  title: Simple Inventory API
+  # put the contact info for your development or API team
+  contact:
+    email: rugal.bernstein.0@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+#  ----------------------------------------------------------
+
+# tags are used for organizing operations
+tags:
+- name: student
+  description: Student related operations
+- name: course
+  description: Course related operations
+- name: registration
+  description: Registration related operations
+
+#  ----------------------------------------------------------
+
+components:
+  schemas:
+    NewPost:
+      type: object
+      properties:
+        title:
+          type: string
+          example: This is title
+        content:
+          type: string
+          example:  `This is Content in markdown format`
+    Post:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/NewPost'
+        - properties:
+            pid:
+              description: Id of post
+              type: integer
+              example: 1
+            hash:
+              type: string
+              description: Hash of the torrent file
+      required:
+        - pid
+  
+    Response204:
+      description:  Resource deleted
+    Response400:
+      description:  Bad request
+    Response401:
+      description:  Request not authenticated
+    Response403:
+      description:  Request not authorized
+    Response404:
+      description:  Resource not found
+    Response405:
+      description:  Request method not found
+    Response406:
+      description:  Response representation not negotiable
+    Response409:
+      description:  Resource conflicted
+
+#  ----------------------------------------------------------
+
+paths:
+  /post/{pid}:
+    parameters:
+      - in: path
+        name: pid
+        description: Post Id
+        required: true
+        schema:
+          type: integer
+    get:
+      tags:
+        - student
+      summary: Get post
+      operationId: getPost
+      responses:
+        200:
+          description: Post got
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        401:
+          $ref: '#/components/schemas/Response401'
+        403:
+          $ref: '#/components/schemas/Response403'
+        404:
+          $ref: '#/components/schemas/Response404'
+        405:
+          $ref: '#/components/schemas/Response405'
+        406:
+          $ref: '#/components/schemas/Response406'
+    put:
+      tags:
+        - student
+      summary: Update post basic information
+      operationId: updatePost
+      description: |
+        Update post by posting JSON.
+      requestBody:
+        description: Post to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPost'
+
+      responses:
+        200:
+          description: Post updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        400:
+          $ref: '#/components/schemas/Response400'
+        401:
+          $ref: '#/components/schemas/Response401'
+        403:
+          $ref: '#/components/schemas/Response403'
+        404:
+          $ref: '#/components/schemas/Response404'
+        405:
+          $ref: '#/components/schemas/Response405'
+        406:
+          $ref: '#/components/schemas/Response406'
+    delete:
+      tags:
+        - student
+      summary: Delete post
+      operationId: deletePost
+      responses:
+        204:
+          $ref: '#/components/schemas/Response204'
+        401:
+          $ref: '#/components/schemas/Response401'
+        403:
+          $ref: '#/components/schemas/Response403'
+        404:
+          $ref: '#/components/schemas/Response404'
+        405:
+          $ref: '#/components/schemas/Response405'
+        406:
+          $ref: '#/components/schemas/Response406'
+  /post:
+    post:
+      tags:
+        - student
+      summary: Create post
+      operationId: createPost
+      description: |
+        Create post by posting JSON.
+      requestBody:
+        description: Basic post object to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPost'
+      responses:
+        201:
+          description: Post created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        400:
+          $ref: '#/components/schemas/Response400'
+        401:
+          $ref: '#/components/schemas/Response401'
+        403:
+          $ref: '#/components/schemas/Response403'
+        405:
+          $ref: '#/components/schemas/Response405'
+        406:
+          $ref: '#/components/schemas/Response406'
+        409:
+          $ref: '#/components/schemas/Response409'
+#  --------------------------------
+#  ----------------------------------------------------------

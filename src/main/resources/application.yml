@@ -1,0 +1,46 @@
+# This configuration should be fetched from Spring Cloud Config
+# Common configuration across different environments
+
+#Spring Service Registry
+eureka:
+  client:
+    enabled: false
+
+#Hibernate
+hibernate:
+  connection:
+    autocommit: false
+  format_sql: true
+  hbm2ddl:
+    auto: validate
+  show_sql: false
+  current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+  dialect: org.hibernate.dialect.PostgreSQLDialect
+
+spring:
+  jpa:
+    open-in-view: false
+  profiles:
+    include: swagger
+    #default profile, this can be overriden by environmental variable
+    active: local
+  flyway:
+    locations: filesystem:configuration/db/migration
+    schemas: pt
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - info
+          - health
+          - loggers
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: full

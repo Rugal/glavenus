@@ -1,0 +1,62 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:11.0-jdk-node
+        environment:
+          SPRING_PROFILES_ACTIVE: ci
+          CODECOV_TOKEN: cff2d55a-d535-49a6-ba59-67891af4608f
+      - image: circleci/postgres:10-alpine-ram
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: circletest
+
+    steps:
+      - checkout
+      - restore_cache:
+          key: v1-template-{{ checksum "pom.xml" }}
+      - run: mvn dependency:go-offline
+      - run: mvn -Dflyway.configFile=configuration/db/${SPRING_PROFILES_ACTIVE}.properties flyway:clean flyway:migrate
+      - run: mvn clean -Dskip.surefire.tests=false -D=skip.failsafe.tests=false verify
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/junit/
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
+            find . -type f -regex ".*/target/failsafe-reports/.*xml" -exec cp {} ~/junit/ \;
+          when: always
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: target/site
+      - run: curl -s https://codecov.io/bash | bash
+      - run: mvn clean package
+      - save_cache:
+          key: v1-template-{{ checksum "pom.xml" }}
+          paths:
+            - ~/.m2
+
+  deploy:
+    docker:
+      - image: circleci/openjdk:11.0-jdk-node
+    steps:
+      - checkout
+      - run:
+          name: Deploy master branch to Heroku development environment
+          command: |
+            git push https://heroku:${HEROKU_API_KEY}@git.heroku.com/spring-boot-development.git master
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
