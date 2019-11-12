@@ -37,7 +37,7 @@ components:
           example: This is title
         content:
           type: string
-          example:  `This is Content in markdown format`
+          example:  ~~This is Content in markdown format~~
     Post:
       type: object
       allOf:
@@ -52,7 +52,7 @@ components:
               description: Hash of the torrent file
       required:
         - pid
-  
+
     Response204:
       description:  Resource deleted
     Response400:
