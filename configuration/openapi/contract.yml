@@ -18,12 +18,12 @@ info:
 
 # tags are used for organizing operations
 tags:
-- name: student
-  description: Student related operations
-- name: course
-  description: Course related operations
-- name: registration
-  description: Registration related operations
+- name: post
+  description: 
+- name: torrent
+  description: 
+- name: user
+  description: 
 
 #  ----------------------------------------------------------
 
@@ -73,6 +73,56 @@ components:
 #  ----------------------------------------------------------
 
 paths:
+  /post/{pid}/torrent:
+    parameters:
+      - in: path
+        name: pid
+        description: Post Id
+        required: true
+        schema:
+          type: integer
+    post:
+      tags:
+        - post
+        - torrent
+      summary: Upload torrent for post
+      operationId: upload
+      description: Upload torrent file for post by multipart.
+#      requestBody:
+#        content:
+#          application/x-bittorrent:
+#            schema:
+#              type: string
+#              format: binary
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+
+      responses:
+        201:
+          description: Torrent file uploaded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        400:
+          $ref: '#/components/schemas/Response400'
+        401:
+          $ref: '#/components/schemas/Response401'
+        403:
+          $ref: '#/components/schemas/Response403'
+        405:
+          $ref: '#/components/schemas/Response405'
+        406:
+          $ref: '#/components/schemas/Response406'
+        409:
+          $ref: '#/components/schemas/Response409'
   /post/{pid}:
     parameters:
       - in: path
@@ -83,7 +133,7 @@ paths:
           type: integer
     get:
       tags:
-        - student
+        - post
       summary: Get post
       operationId: getPost
       responses:
@@ -105,7 +155,7 @@ paths:
           $ref: '#/components/schemas/Response406'
     put:
       tags:
-        - student
+        - post
       summary: Update post basic information
       operationId: updatePost
       description: |
@@ -139,7 +189,7 @@ paths:
           $ref: '#/components/schemas/Response406'
     delete:
       tags:
-        - student
+        - post
       summary: Delete post
       operationId: deletePost
       responses:
@@ -158,7 +208,7 @@ paths:
   /post:
     post:
       tags:
-        - student
+        - post
       summary: Create post
       operationId: createPost
       description: |
