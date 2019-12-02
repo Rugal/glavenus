@@ -30,37 +30,37 @@ public class UnitTestApplicationContext {
 
   @Bean
   @Scope("prototype")
-  public ClientDao courseDao() {
+  public ClientDao clientDao() {
     return Mockito.mock(ClientDao.class);
   }
 
   @Bean
   @Scope("prototype")
-  public UserDao studentDao() {
+  public UserDao userDao() {
     return Mockito.mock(UserDao.class);
   }
 
   @Bean
   @Scope("prototype")
-  public PostDao registrationDao() {
+  public PostDao postDao() {
     return Mockito.mock(PostDao.class);
   }
 
   @Bean
   @Scope("prototype")
-  public ClientService courseService() {
+  public ClientService clientService() {
     return Mockito.mock(ClientService.class);
   }
 
   @Bean
   @Scope("prototype")
-  public PostService registrationService() {
+  public PostService postService() {
     return Mockito.mock(PostService.class);
   }
 
   @Bean
   @Scope("prototype")
-  public UserService studentService() {
+  public UserService userService() {
     return Mockito.mock(UserService.class);
   }
 }
