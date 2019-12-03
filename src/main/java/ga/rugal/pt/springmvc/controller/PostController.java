@@ -40,7 +40,7 @@ public class PostController implements PostApi {
   private PostService postService;
 
   @Override
-  public ResponseEntity<PostDto> createPost(final @RequestBody NewPostDto newPostDto) {
+  public ResponseEntity<PostDto> create(final @RequestBody NewPostDto newPostDto) {
     final Post save = this.postService.getDao().save(PostMapper.INSTANCE.to(newPostDto));
     final PostDto from = PostMapper.INSTANCE.from(save);
     final URI location = ServletUriComponentsBuilder
@@ -53,7 +53,7 @@ public class PostController implements PostApi {
   }
 
   @Override
-  public ResponseEntity<Void> deletePost(final @PathVariable(PID) Integer pid) {
+  public ResponseEntity<Void> delete(final @PathVariable(PID) Integer pid) {
     if (!this.postService.getDao().existsById(pid)) {
       return ResponseEntity.notFound().build();
     }
@@ -62,7 +62,7 @@ public class PostController implements PostApi {
   }
 
   @Override
-  public ResponseEntity<PostDto> getPost(final @PathVariable(PID) Integer pid) {
+  public ResponseEntity<PostDto> get(final @PathVariable(PID) Integer pid) {
 
     final Optional<Post> findById = this.postService.getDao().findById(pid);
 
@@ -72,8 +72,8 @@ public class PostController implements PostApi {
   }
 
   @Override
-  public ResponseEntity<PostDto> updatePost(final @PathVariable(PID) Integer pid,
-                                            final @RequestBody NewPostDto newPostDto) {
+  public ResponseEntity<PostDto> update(final @PathVariable(PID) Integer pid,
+                                        final @RequestBody NewPostDto newPostDto) {
     if (!this.postService.getDao().existsById(pid)) {
       return ResponseEntity.notFound().build();
     }

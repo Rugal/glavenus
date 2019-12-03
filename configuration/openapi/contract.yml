@@ -129,7 +129,7 @@ paths:
       tags:
         - post
       summary: Get post
-      operationId: getPost
+      operationId: get
       responses:
         200:
           description: Post got
@@ -151,7 +151,7 @@ paths:
       tags:
         - post
       summary: Update post basic information
-      operationId: updatePost
+      operationId: update
       description: |
         Update post by posting JSON.
       requestBody:
@@ -185,7 +185,7 @@ paths:
       tags:
         - post
       summary: Delete post
-      operationId: deletePost
+      operationId: delete
       responses:
         204:
           $ref: '#/components/schemas/Response204'
@@ -204,7 +204,7 @@ paths:
       tags:
         - post
       summary: Create post
-      operationId: createPost
+      operationId: create
       description: |
         Create post by posting JSON.
       requestBody:
