@@ -100,7 +100,7 @@ public class PostController implements PostApi {
     }
     final PostDto from = PostMapper.INSTANCE.from(db.get());
     final URI location = ServletUriComponentsBuilder
-            .fromCurrentRequest().path("/{id}")
+            .fromCurrentRequest()
             .buildAndExpand(from.getPid()).toUri();
 
     return ResponseEntity

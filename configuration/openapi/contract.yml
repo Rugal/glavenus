@@ -88,12 +88,6 @@ paths:
       summary: Upload torrent for post
       operationId: upload
       description: Upload torrent file for post by multipart.
-#      requestBody:
-#        content:
-#          application/x-bittorrent:
-#            schema:
-#              type: string
-#              format: binary
       requestBody:
         content:
           multipart/form-data:
