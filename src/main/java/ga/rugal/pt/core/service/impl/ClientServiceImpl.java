@@ -36,12 +36,12 @@ public class ClientServiceImpl implements ClientService {
   public Client findByPeerId(final String name, final String version) {
     //Get the specific client name and version
     Optional<Client> optional = this.dao.findByNameAndVersion(name, version);
-    if (!optional.isEmpty()) {
+    if (optional.isPresent()) {
       return optional.get();
     }
     //Get generic client name
     optional = this.dao.findByNameAndVersion(name, SystemDefaultProperty.STAR);
-    if (!optional.isEmpty()) {
+    if (optional.isPresent()) {
       return optional.get();
     }
     //Get default client
