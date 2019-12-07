@@ -54,7 +54,7 @@ public class Post {
   private String hash;
 
   @Column
-  private byte[] bencode;
+  private byte[] torrent;
 
   @Column
   private Integer size;

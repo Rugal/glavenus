@@ -38,7 +38,7 @@ CREATE TABLE post (
   content text,
   enable boolean,
   hash character varying(50),
-  bencode bytea,
+  torrent bytea,
   size integer,
   author integer REFERENCES "user"(uid)
 );

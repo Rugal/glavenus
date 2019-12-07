@@ -39,10 +39,10 @@ components:
           type: string
           example:  ~~This is Content in markdown format~~
     Post:
-      type: object
       allOf:
         - $ref: '#/components/schemas/NewPost'
-        - properties:
+        - type: object
+          properties:
             pid:
               description: Id of post
               type: integer
@@ -50,8 +50,8 @@ components:
             hash:
               type: string
               description: Hash of the torrent file
-      required:
-        - pid
+          required:
+            - pid
 
     Response204:
       description:  Resource deleted
@@ -94,7 +94,9 @@ paths:
             schema:
               type: object
               properties:
-                file:
+                # name it by `file` as the codegen generate no other than `file`
+                # this may be a bug of openapi codegen but let do it for now
+                file:      
                   type: string
                   format: binary
 
