@@ -1,5 +1,11 @@
 package config;
 
+import ga.rugal.pt.core.dao.ClientDao;
+import ga.rugal.pt.core.dao.PostDao;
+import ga.rugal.pt.core.dao.UserDao;
+import ga.rugal.pt.core.service.ClientService;
+import ga.rugal.pt.core.service.PostService;
+import ga.rugal.pt.core.service.UserService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mockito.Mockito;
@@ -7,13 +13,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
-
-import ga.rugal.pt.core.dao.ClientDao;
-import ga.rugal.pt.core.dao.UserDao;
-import ga.rugal.pt.core.dao.PostDao;
-import ga.rugal.pt.core.service.ClientService;
-import ga.rugal.pt.core.service.PostService;
-import ga.rugal.pt.core.service.UserService;
 
 /**
  *

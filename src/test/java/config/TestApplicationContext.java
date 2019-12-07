@@ -1,6 +1,9 @@
 package config;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 import ga.rugal.pt.core.entity.Post;
 import ga.rugal.pt.openapi.model.NewPostDto;
@@ -8,9 +11,11 @@ import ga.rugal.pt.openapi.model.NewPostDto;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
+import com.turn.ttorrent.common.Torrent;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mock.web.MockMultipartFile;
 
 /**
  *
@@ -47,6 +52,11 @@ public class TestApplicationContext {
   }
 
   @Bean
+  public Torrent torrent(final File torrentFile) throws IOException, NoSuchAlgorithmException {
+    return Torrent.load(torrentFile);
+  }
+
+  @Bean
   public NewPostDto newPostDto(final Faker faker) {
     final NewPostDto post = new NewPostDto();
     post.setContent(faker.hitchhikersGuideToTheGalaxy().location());
@@ -55,14 +65,23 @@ public class TestApplicationContext {
   }
 
   @Bean
-  public Post post(final Faker faker) {
+  public Post post(final Faker faker, final Torrent torrent) {
     final Post post = new Post();
     post.setContent(faker.hitchhikersGuideToTheGalaxy().location());
     post.setPid(1);
     post.setSize(62642L);
     post.setTitle(faker.name().name());
-    post.setHash("A12F4E3EFEDC35937670811147A076BC596176CA");
+    post.setHash(torrent.getHexInfoHash());
+    post.setTorrent(torrent.getEncoded());
     post.setEnable(true);
     return post;
+  }
+
+  @Bean
+  public MockMultipartFile mmf(final File torrentFile) throws IOException {
+    return new MockMultipartFile("file",
+                                 torrentFile.getName(),
+                                 SystemDefaultProperty.BITTORRENT_MIME,
+                                 new FileInputStream(torrentFile));
   }
 }

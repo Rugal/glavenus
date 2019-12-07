@@ -68,7 +68,6 @@ public class PostController implements PostApi {
 
   @Override
   public ResponseEntity<PostDto> get(final @PathVariable(PID) Integer pid) {
-
     final Optional<Post> findById = this.postService.getDao().findById(pid);
 
     return findById.isEmpty()
@@ -102,11 +101,11 @@ public class PostController implements PostApi {
                file.getOriginalFilename(),
                torrent.getHexInfoHash(),
                torrent.getSize());
+
       db.setHash(torrent.getHexInfoHash());
       db.setTorrent(file.getBytes());
       db.setSize(torrent.getSize());
       db = this.postService.getDao().save(db);
-
     } catch (final NoSuchAlgorithmException ex) {
       LOG.error("SHA-1 algorithm is required to decrypt torrent file", ex);
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -114,6 +113,7 @@ public class PostController implements PostApi {
       LOG.error("Unable to open/parse torrent file", ex);
       return ResponseEntity.unprocessableEntity().build();
     }
+
     final PostDto from = PostMapper.INSTANCE.from(db);
     final URI location = ServletUriComponentsBuilder
             .fromCurrentRequest()

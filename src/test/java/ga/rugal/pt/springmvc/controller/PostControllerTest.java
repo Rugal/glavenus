@@ -2,19 +2,16 @@ package ga.rugal.pt.springmvc.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.only;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Optional;
-
-import config.SystemDefaultProperty;
 
 import ga.rugal.pt.core.dao.PostDao;
 import ga.rugal.pt.core.entity.Post;
@@ -25,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -38,11 +36,14 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(PostController.class)
 public class PostControllerTest extends ControllerUnitTestBase {
 
+  @Mock
+  private MockMultipartFile mock;
+
   @Autowired
   private MockMvc mockMvc;
 
   @Autowired
-  public File torrentFile;
+  public MockMultipartFile mmf;
 
   @Autowired
   private ObjectMapper objectMapper;
@@ -63,6 +64,7 @@ public class PostControllerTest extends ControllerUnitTestBase {
   private PostController controller;
 
   @BeforeEach
+  @SneakyThrows
   public void setUp() {
     this.controller.setPostService(this.postService);
 
@@ -70,6 +72,9 @@ public class PostControllerTest extends ControllerUnitTestBase {
 
     given(this.postDao.findById(any())).willReturn(Optional.of(this.post));
     given(this.postDao.save(any())).willReturn(this.post);
+
+    given(this.mock.getName()).willReturn("file");
+    given(this.mock.getBytes()).willThrow(IOException.class);
   }
 
   @SneakyThrows
@@ -80,21 +85,39 @@ public class PostControllerTest extends ControllerUnitTestBase {
             .content(this.objectMapper.writeValueAsString(this.newPostDto))
             .accept(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isCreated())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andDo(print());
-    verify(this.postDao, only()).save(any());
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    verify(this.postDao, times(1)).save(any());
   }
 
   @SneakyThrows
   @Test
   public void upload_201() {
-    final MockMultipartFile mmf = new MockMultipartFile("file",
-                                                        this.torrentFile.getName(),
-                                                        SystemDefaultProperty.BITTORRENT_MIME,
-                                                        new FileInputStream(this.torrentFile));
     this.mockMvc.perform(multipart("/post/1/torrent")
-            .file(mmf))
-            .andDo(print())
+            .file(this.mmf))
             .andExpect(status().isCreated());
+    verify(this.postDao, times(1)).findById(any());
+    verify(this.postDao, times(1)).save(any());
+  }
+
+  @SneakyThrows
+  @Test
+  public void upload_404() {
+    given(this.postDao.findById(any())).willReturn(Optional.empty());
+
+    this.mockMvc.perform(multipart("/post/1/torrent")
+            .file(this.mmf))
+            .andExpect(status().isNotFound());
+    verify(this.postDao, times(1)).findById(any());
+    verify(this.postDao, never()).save(any());
+  }
+
+  @SneakyThrows
+  @Test
+  public void upload_422() {
+    this.mockMvc.perform(multipart("/post/1/torrent")
+            .file(this.mock))
+            .andExpect(status().isUnprocessableEntity());
+    verify(this.postDao, times(1)).findById(any());
+    verify(this.postDao, never()).save(any());
   }
 }
