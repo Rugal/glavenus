@@ -41,7 +41,7 @@ CREATE TABLE post (
   enable boolean,
   hash character varying(50),
   torrent bytea,
-  size integer,
+  size bigint,
   create_at bigint,
   update_at bigint,
   author integer REFERENCES "user"(uid)

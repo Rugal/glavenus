@@ -49,8 +49,12 @@ public class Post {
   @Column(length = 2147483647)
   private String content;
 
+  /**
+   * Disable post by default.<BR>
+   * Only enable post after 1. torrent file uploaded, verified 2. post published.
+   */
   @Column
-  private Boolean enable;
+  private Boolean enable = false;
 
   @Size(max = 50)
   @Column(length = 50)
@@ -60,7 +64,7 @@ public class Post {
   private byte[] torrent;
 
   @Column
-  private Integer size;
+  private Long size;
 
   @JoinColumn(name = "author", referencedColumnName = "uid")
   @ManyToOne

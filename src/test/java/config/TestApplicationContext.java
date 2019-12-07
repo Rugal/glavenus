@@ -59,7 +59,7 @@ public class TestApplicationContext {
     final Post post = new Post();
     post.setContent(faker.hitchhikersGuideToTheGalaxy().location());
     post.setPid(1);
-    post.setSize(62642);
+    post.setSize(62642L);
     post.setTitle(faker.name().name());
     post.setHash("A12F4E3EFEDC35937670811147A076BC596176CA");
     post.setEnable(true);
