@@ -44,11 +44,11 @@ public class Announce {
   @Column
   private Long upload;
 
-  @Column(name = "create_time")
-  private Long createTime;
+  @Column(name = "create_at")
+  private Long createAt;
 
-  @Column(name = "update_time")
-  private Long updateTime;
+  @Column(name = "update_at")
+  private Long updateAt;
 
   @JoinColumn(name = "client", referencedColumnName = "cid")
   @ManyToOne
@@ -64,11 +64,11 @@ public class Announce {
 
   @PrePersist
   void onCreate() {
-    this.createTime = Instant.now().getEpochSecond();
+    this.createAt = Instant.now().getEpochSecond();
   }
 
   @PreUpdate
   void onUpdate() {
-    this.updateTime = Instant.now().getEpochSecond();
+    this.updateAt = Instant.now().getEpochSecond();
   }
 }

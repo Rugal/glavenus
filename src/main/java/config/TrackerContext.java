@@ -56,8 +56,8 @@ public class TrackerContext {
 
     final Tracker tracker = new Tracker(InetAddress.getLocalHost(), service);
     for (Post p : postService.getDao().findAll()) {
-      if (Objects.nonNull(p.getBencode())) {
-        tracker.announce(new TrackedTorrent(p.getBencode()));
+      if (Objects.nonNull(p.getTorrent())) {
+        tracker.announce(new TrackedTorrent(p.getTorrent()));
       }
     }
     return tracker;

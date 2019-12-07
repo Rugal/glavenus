@@ -35,6 +35,8 @@ public class PostController implements PostApi {
 
   private static final String PID = "pid";
 
+  private static final String FILE = "file";
+
   @Autowired
   @Setter
   private PostService postService;
@@ -85,7 +87,7 @@ public class PostController implements PostApi {
 
   @Override
   public ResponseEntity<PostDto> upload(final @PathVariable(PID) Integer pid,
-                                        final @RequestPart("file") MultipartFile file) {
+                                        final @RequestPart(FILE) MultipartFile file) {
     final Optional<Post> db = this.postService.getDao().findById(pid);
     if (db.isEmpty()) {
       return ResponseEntity.notFound().build();

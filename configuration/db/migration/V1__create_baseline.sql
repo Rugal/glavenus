@@ -29,7 +29,9 @@ CREATE TABLE "user" (
   download bigint,
   upload bigint,
   credit int,
-  status smallint
+  status smallint,
+  create_at bigint,
+  update_at bigint
 );
 
 CREATE TABLE post (
@@ -40,6 +42,8 @@ CREATE TABLE post (
   hash character varying(50),
   torrent bytea,
   size integer,
+  create_at bigint,
+  update_at bigint,
   author integer REFERENCES "user"(uid)
 );
 
@@ -47,7 +51,9 @@ CREATE TABLE client (
   cid serial PRIMARY KEY,
   name character varying(50),
   version character varying(10),
-  enable boolean
+  enable boolean,
+  create_at bigint,
+  update_at bigint
 );
 
 CREATE TABLE announce (
@@ -57,8 +63,8 @@ CREATE TABLE announce (
   post integer REFERENCES post(pid),
   "user" integer REFERENCES "user"(uid),
   client integer REFERENCES client(cid),
-  create_time bigint,
-  update_time bigint
+  create_at bigint,
+  update_at bigint
 );
 
 --
