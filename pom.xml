@@ -96,6 +96,10 @@
       <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.github.javafaker</groupId>
+      <artifactId>javafaker</artifactId>
+    </dependency>
     <!-- 
       database
     -->
@@ -143,18 +147,21 @@
       <artifactId>graphql-java-tools</artifactId>
       <version>${graphql-tool.version}</version>
     </dependency>
-    <dependency>
-      <groupId>com.github.javafaker</groupId>
-      <artifactId>javafaker</artifactId>
-    </dependency>
+    <!-- spotbugs -->
     <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
     </dependency>
+    <!-- ttorent -->
     <dependency>
       <groupId>ga.rugal</groupId>  
       <artifactId>ttorrent</artifactId>
       <version>${ttorrent.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mindrot</groupId>
+      <artifactId>jbcrypt</artifactId>
+      <version>0.4</version>
     </dependency>
     <!-- Auto Append -->
   </dependencies>

@@ -41,6 +41,9 @@ public class User {
   @Column(length = 50)
   private String username;
 
+  /**
+   * Ciphered password with BCrypt algorithm.
+   */
   @Size(max = 100)
   @Column(length = 100)
   private String password;
