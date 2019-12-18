@@ -26,6 +26,7 @@ CREATE TABLE "user" (
   username character varying(50),
   password character varying(100),
   email character varying(50),
+  secret character varying(50),
   download bigint,
   upload bigint,
   credit int,

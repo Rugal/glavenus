@@ -42,7 +42,10 @@ public class User {
   private String username;
 
   /**
-   * Ciphered password with BCrypt algorithm.
+   * {@code Ciphered} password with BCrypt algorithm.<BR>
+   * Plain text will be sent in network transmission and be verified in controller.<BR>
+   * The reason is, compromise in network transmission will expose single user password for sure,
+   * but compromise service database would breaching all users.
    */
   @Size(max = 100)
   @Column(length = 100)
@@ -51,6 +54,16 @@ public class User {
   @Size(max = 50)
   @Column(length = 50)
   private String email;
+
+  /**
+   * Secret for announce authentication in {@code plain text}.<BR>
+   * Ciphered secret with BCrypt algorithm will be created while user downloads torrent.<BR>
+   * Secret will be automatically and periodically generated, hence compromise does not affect too
+   * much.
+   */
+  @Size(max = 50)
+  @Column(length = 50)
+  private String secret;
 
   @Column
   private Long download;

@@ -27,11 +27,23 @@ public class UserServiceImpl implements UserService {
    * {@inheritDoc}
    */
   @Override
-  public boolean authenticate(final int uid, final @Nonnull String credential) {
+  public boolean authenticate(final int uid, final @Nonnull String password) {
     final Optional<User> optional = this.dao.findById(uid);
     if (optional.isEmpty()) {
       return false;
     }
-    return BCrypt.checkpw(credential, optional.get().getPassword());
+    return BCrypt.checkpw(password, optional.get().getPassword());
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean canAnnounce(final int uid, final @Nonnull String secret) {
+    final Optional<User> optional = this.dao.findById(uid);
+    if (optional.isEmpty()) {
+      return false;
+    }
+    return BCrypt.checkpw(optional.get().getSecret(), secret);
   }
 }

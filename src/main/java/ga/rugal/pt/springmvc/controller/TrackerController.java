@@ -1,9 +1,10 @@
-
 package ga.rugal.pt.springmvc.controller;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentMap;
+
+import config.Constant;
 
 import ga.rugal.pt.core.entity.User;
 import ga.rugal.pt.core.service.UserService;
@@ -30,19 +31,26 @@ public class TrackerController extends TrackerService {
     super(torrents);
   }
 
+  /**
+   * Wrapper method for authenticating announce secret.
+   *
+   * @param parameters
+   *
+   * @return
+   */
   private Optional<User> authenticate(final Map<String, BeValue> parameters) {
     try {
       //user id
-      final int uid = parameters.get("uid").getInt();
+      final int uid = parameters.get(Constant.UID).getInt();
       //password in plaintext
-      final String credential = parameters.get("credential").getString();
-      if (this.userService.authenticate(uid, credential)) {
-        LOG.info("Matched uid [{}] and credential [{}]", uid, credential);
+      final String secret = parameters.get(Constant.SECRET).getString();
+      if (this.userService.canAnnounce(uid, secret)) {
+        LOG.info("Matched uid [{}] and secret [{}]", uid, secret);
         return this.userService.getDao().findById(uid);
       }
-      LOG.info("Mismatched uid [{}] and credential [{}]", uid, credential);
+      LOG.info("Mismatched uid [{}] and secret [{}]", uid, secret);
     } catch (final InvalidBEncodingException ex) {
-      LOG.error("Invalid encoding for uid credential", ex);
+      LOG.error("Invalid encoding for uid secret", ex);
     }
     return Optional.empty();
   }
