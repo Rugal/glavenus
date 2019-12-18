@@ -119,6 +119,32 @@ paths:
           $ref: '#/components/schemas/Response406'
         409:
           $ref: '#/components/schemas/Response409'
+    get:
+      tags:
+        - post
+        - torrent
+      summary: Download torrent for post
+      operationId: download
+      description: Download torrent file for post by multipart.
+      
+      responses:
+        200:
+          description: Torrent got
+          content:
+            application/x-bittorrent:
+              schema:
+                type: string
+                format: binary
+        401:
+          $ref: '#/components/schemas/Response401'
+        403:
+          $ref: '#/components/schemas/Response403'
+        404:
+          $ref: '#/components/schemas/Response404'
+        405:
+          $ref: '#/components/schemas/Response405'
+        406:
+          $ref: '#/components/schemas/Response406'
   /post/{pid}:
     parameters:
       - in: path

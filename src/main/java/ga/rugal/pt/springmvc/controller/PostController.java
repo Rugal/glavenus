@@ -5,6 +5,8 @@ import java.net.URI;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
+import config.SystemDefaultProperty;
+
 import ga.rugal.pt.core.entity.Post;
 import ga.rugal.pt.core.service.PostService;
 import ga.rugal.pt.openapi.api.PostApi;
@@ -17,7 +19,11 @@ import io.swagger.annotations.Api;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -121,5 +127,20 @@ public class PostController implements PostApi {
     return ResponseEntity
             .created(location)
             .body(from);
+  }
+
+  @Override
+  public ResponseEntity<Resource> download(final @PathVariable("pid") Integer pid) {
+    final Optional<Post> optional = this.postService.getDao().findById(pid);
+    if (optional.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
+    final Post post = optional.get();
+
+    return ResponseEntity.ok()
+            .contentType(MediaType.parseMediaType(SystemDefaultProperty.BITTORRENT_MIME))
+            .header(HttpHeaders.CONTENT_DISPOSITION,
+                    String.format("attachment; filename=%s.torrent", post.getHash()))
+            .body(new ByteArrayResource(post.getTorrent()));
   }
 }
