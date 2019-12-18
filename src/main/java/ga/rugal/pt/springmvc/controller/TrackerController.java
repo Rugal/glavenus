@@ -1,8 +1,11 @@
+
 package ga.rugal.pt.springmvc.controller;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentMap;
 
+import ga.rugal.pt.core.entity.User;
 import ga.rugal.pt.core.service.UserService;
 
 import com.turn.ttorrent.bcodec.BeValue;
@@ -27,23 +30,26 @@ public class TrackerController extends TrackerService {
     super(torrents);
   }
 
+  private Optional<User> authenticate(final Map<String, BeValue> parameters) {
+    try {
+      //user id
+      final int uid = parameters.get("uid").getInt();
+      //password in plaintext
+      final String credential = parameters.get("credential").getString();
+      if (this.userService.authenticate(uid, credential)) {
+        LOG.info("Matched uid [{}] and credential [{}]", uid, credential);
+        return this.userService.getDao().findById(uid);
+      }
+      LOG.info("Mismatched uid [{}] and credential [{}]", uid, credential);
+    } catch (final InvalidBEncodingException ex) {
+      LOG.error("Invalid encoding for uid credential", ex);
+    }
+    return Optional.empty();
+  }
+
   @Override
   protected boolean beforeUpdate(final TrackedTorrent torrent,
                                  final Map<String, BeValue> parameters) {
-    final int uid; //user id
-    final String credential; //password in plaintext
-    try {
-      uid = parameters.get("uid").getInt();
-      credential = parameters.get("credential").getString();
-      if (this.userService.authenticate(uid, credential)) {
-        LOG.info("Mismatched uid [{}] and credential [{}]", uid, credential);
-        return false;
-      }
-    } catch (final InvalidBEncodingException ex) {
-      LOG.error("Invalid encoding for uid [{}] and credential [{}]", ex);
-      return false;
-    }
-    LOG.info("Matched uid [{}] and credential [{}]", uid, credential);
-    return true;
+    return this.authenticate(parameters).isPresent();
   }
 }
