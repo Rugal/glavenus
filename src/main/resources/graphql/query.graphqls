@@ -1,5 +1,6 @@
 type Query {
   user(uid: Int): User
+  post(pid: Int): Post
 }
 
 type User {
@@ -9,6 +10,18 @@ type User {
   download: Int!
   upload: Int!
   credit: Int!
+  createAt: Int
+  updateAt: Int
+}
+
+type Post {
+  pid: Int!
+  title: String
+  content: String
+  enable: Boolean
+  hash: String
+  size: Int
+  author: User!
   createAt: Int
   updateAt: Int
 }
