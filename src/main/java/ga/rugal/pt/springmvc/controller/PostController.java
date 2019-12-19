@@ -63,6 +63,7 @@ public class PostController implements PostApi {
   private PostService postService;
 
   @Autowired
+  @Setter
   private UserService userService;
 
   @Override

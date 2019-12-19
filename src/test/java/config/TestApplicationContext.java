@@ -6,12 +6,15 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 import ga.rugal.pt.core.entity.Post;
+import ga.rugal.pt.core.entity.User;
 import ga.rugal.pt.openapi.model.NewPostDto;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import com.turn.ttorrent.common.Torrent;
+import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +28,18 @@ import org.springframework.mock.web.MockMultipartFile;
 public class TestApplicationContext {
 
   private static final String TORRENT_PATH = "configuration/torrent";
+
+  @Bean
+  @ConditionalOnMissingBean
+  public String host(final @Value("${server.host:localhost}") String host) {
+    return host;
+  }
+
+  @Bean
+  @ConditionalOnMissingBean
+  public int port(final @Value("${server.port:6969}") int port) {
+    return port;
+  }
 
   @Bean
   @ConditionalOnMissingBean
@@ -83,5 +98,14 @@ public class TestApplicationContext {
                                  torrentFile.getName(),
                                  Constant.BITTORRENT_MIME,
                                  new FileInputStream(torrentFile));
+  }
+
+  @Bean
+  public User user(final Faker faker) {
+    final User user = new User();
+    user.setUid(1);
+    user.setPassword(BCrypt.hashpw("1", BCrypt.gensalt()));
+    user.setEmail(faker.internet().emailAddress());
+    return user;
   }
 }
