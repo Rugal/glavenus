@@ -177,28 +177,6 @@ paths:
         required: true
         schema:
           type: string
-    get:
-      tags:
-        - post
-      summary: Get post
-      operationId: get
-      responses:
-        200:
-          description: Post got
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Post'
-        401:
-          $ref: '#/components/schemas/Response401'
-        403:
-          $ref: '#/components/schemas/Response403'
-        404:
-          $ref: '#/components/schemas/Response404'
-        405:
-          $ref: '#/components/schemas/Response405'
-        406:
-          $ref: '#/components/schemas/Response406'
     put:
       tags:
         - post

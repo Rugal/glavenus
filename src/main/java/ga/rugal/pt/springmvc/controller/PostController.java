@@ -98,17 +98,6 @@ public class PostController implements PostApi {
   }
 
   @Override
-  public ResponseEntity<PostDto> get(final @PathVariable(Constant.PID) Integer pid,
-                                     final @RequestHeader(value = Constant.UID) Integer uid,
-                                     final @RequestHeader(Constant.P) String password) {
-    final Optional<Post> findById = this.postService.getDao().findById(pid);
-
-    return findById.isEmpty()
-           ? ResponseEntity.notFound().build()
-           : ResponseEntity.ok(PostMapper.INSTANCE.from(findById.get()));
-  }
-
-  @Override
   public ResponseEntity<PostDto> update(final @PathVariable(Constant.PID) Integer pid,
                                         final @RequestHeader(value = Constant.UID) Integer uid,
                                         final @RequestHeader(Constant.P) String password,
