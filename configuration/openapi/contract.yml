@@ -81,6 +81,12 @@ paths:
         required: true
         schema:
           type: integer
+      - in: header
+        name: uid
+        description: User ud
+        required: true
+        schema:
+          type: integer
     post:
       tags:
         - post

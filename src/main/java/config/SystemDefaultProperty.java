@@ -12,8 +12,4 @@ public interface SystemDefaultProperty {
   String SCHEMA = "pt";
 
   String STAR = "*";
-
-  String BITTORRENT_MIME = "application/x-bittorrent";
-
-  String TORRENT_SUFFIX = ".torrent";
 }

@@ -1,7 +1,7 @@
 package config;
 
 import java.io.IOException;
-import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,6 +14,8 @@ import com.turn.ttorrent.tracker.TrackedTorrent;
 import com.turn.ttorrent.tracker.Tracker;
 import com.turn.ttorrent.tracker.TrackerService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,6 +27,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @Slf4j
 public class TrackerContext {
+
+  @Bean
+  public String host(final @Value("${server.host:localhost}") String host) {
+    return host;
+  }
+
+  @Bean
+  public int port(final @Value("${server.port:6969}") int port) {
+    return port;
+  }
 
   @Bean
   public ConcurrentMap<String, TrackedTorrent> torrents() {
@@ -43,6 +55,8 @@ public class TrackerContext {
    *
    * @param postService PostService that get all posts
    * @param service     TrackerService that actually handle the request
+   * @param host        host name
+   * @param port        socket port
    *
    * @return
    *
@@ -51,10 +65,13 @@ public class TrackerContext {
    *
    */
   @Bean(initMethod = "start", destroyMethod = "stop")
-  public Tracker tracker(final PostService postService, final TrackerService service)
+  public Tracker tracker(final PostService postService,
+                         final TrackerService service,
+                         final @Qualifier(Constant.HOST) String host,
+                         final @Qualifier(Constant.PORT) int port)
           throws IOException, NoSuchAlgorithmException {
 
-    final Tracker tracker = new Tracker(InetAddress.getLocalHost(), service);
+    final Tracker tracker = new Tracker(new InetSocketAddress(host, port), service);
     for (Post p : postService.getDao().findAll()) {
       if (Objects.nonNull(p.getTorrent())) {
         tracker.announce(new TrackedTorrent(p.getTorrent()));

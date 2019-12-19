@@ -81,7 +81,7 @@ public class TestApplicationContext {
   public MockMultipartFile mmf(final File torrentFile) throws IOException {
     return new MockMultipartFile("file",
                                  torrentFile.getName(),
-                                 SystemDefaultProperty.BITTORRENT_MIME,
+                                 Constant.BITTORRENT_MIME,
                                  new FileInputStream(torrentFile));
   }
 }
