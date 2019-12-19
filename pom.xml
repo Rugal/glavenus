@@ -212,13 +212,10 @@
       <plugin>
         <groupId>org.openapitools</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
-        <dependencies>
-          <dependency>
-            <groupId>ga.rugal</groupId>
-            <artifactId>feign-client-generator</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-          </dependency>
-        </dependencies>
+        <configuration>
+          <!-- to skip duplicated operationId -->
+          <skipValidateSpec>true</skipValidateSpec>
+        </configuration>
         <executions>
           <execution>
             <id>openapi-codegen-server</id>

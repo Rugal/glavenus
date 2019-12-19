@@ -69,15 +69,20 @@ public class PostController implements PostApi {
   public ResponseEntity<PostDto> create(final @RequestHeader(Constant.UID) Integer uid,
                                         final @RequestHeader(Constant.P) String password,
                                         final @RequestBody NewPostDto newPostDto) {
-    final Post save = this.postService.getDao().save(PostMapper.INSTANCE.to(newPostDto));
-    final PostDto from = PostMapper.INSTANCE.from(save);
+
+    // user must exist as it passed AuthenticationInterceptor
+    final User author = this.userService.getDao().findById(uid).get();
+    final Post newPost = PostMapper.INSTANCE.to(newPostDto);
+    newPost.setAuthor(author);
+
+    final PostDto postDto = PostMapper.INSTANCE.from(this.postService.getDao().save(newPost));
     final URI location = ServletUriComponentsBuilder
             .fromCurrentRequest().path("/{id}")
-            .buildAndExpand(from.getPid()).toUri();
+            .buildAndExpand(postDto.getPid()).toUri();
 
     return ResponseEntity
             .created(location)
-            .body(from);
+            .body(postDto);
   }
 
   @Override
