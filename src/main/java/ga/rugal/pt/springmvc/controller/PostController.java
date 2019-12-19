@@ -43,7 +43,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
- * Course controller.
+ * Post controller.
  *
  * @author Rugal Bernstein
  */

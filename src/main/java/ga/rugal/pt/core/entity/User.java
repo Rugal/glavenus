@@ -66,13 +66,13 @@ public class User {
   private String secret;
 
   @Column
-  private Long download;
+  private Long download = 0L;
 
   @Column
-  private Long upload;
+  private Long upload = 0L;
 
   @Column
-  private Integer credit;
+  private Integer credit = 0;
 
   @Column
   private Short status;
