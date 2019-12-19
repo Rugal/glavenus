@@ -11,6 +11,13 @@ public interface Constant {
 
   String SECRET = "secret";
 
+  String PASSWORD = "password";
+
+  /**
+   * For shorter name.
+   */
+  String P = PASSWORD;
+
   String HOST = "host";
 
   String PORT = "port";

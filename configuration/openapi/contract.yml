@@ -83,10 +83,16 @@ paths:
           type: integer
       - in: header
         name: uid
-        description: User ud
+        description: User id
         required: true
         schema:
           type: integer
+      - in: header
+        name: password
+        description: User password
+        required: true
+        schema:
+          type: string
     post:
       tags:
         - post
@@ -159,6 +165,18 @@ paths:
         required: true
         schema:
           type: integer
+      - in: header
+        name: uid
+        description: User id
+        required: true
+        schema:
+          type: integer
+      - in: header
+        name: password
+        description: User password
+        required: true
+        schema:
+          type: string
     get:
       tags:
         - post
@@ -234,6 +252,19 @@ paths:
         406:
           $ref: '#/components/schemas/Response406'
   /post:
+    parameters:
+      - in: header
+        name: uid
+        description: User id
+        required: true
+        schema:
+          type: integer
+      - in: header
+        name: password
+        description: User password
+        required: true
+        schema:
+          type: string
     post:
       tags:
         - post

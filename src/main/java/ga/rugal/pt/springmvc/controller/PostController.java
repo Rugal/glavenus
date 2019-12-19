@@ -66,7 +66,9 @@ public class PostController implements PostApi {
   private UserService userService;
 
   @Override
-  public ResponseEntity<PostDto> create(final @RequestBody NewPostDto newPostDto) {
+  public ResponseEntity<PostDto> create(final @RequestHeader(Constant.UID) Integer uid,
+                                        final @RequestHeader(Constant.P) String password,
+                                        final @RequestBody NewPostDto newPostDto) {
     final Post save = this.postService.getDao().save(PostMapper.INSTANCE.to(newPostDto));
     final PostDto from = PostMapper.INSTANCE.from(save);
     final URI location = ServletUriComponentsBuilder
@@ -79,7 +81,9 @@ public class PostController implements PostApi {
   }
 
   @Override
-  public ResponseEntity<Void> delete(final @PathVariable(Constant.PID) Integer pid) {
+  public ResponseEntity<Void> delete(final @PathVariable(Constant.PID) Integer pid,
+                                     final @RequestHeader(Constant.UID) Integer uid,
+                                     final @RequestHeader(Constant.P) String password) {
     if (!this.postService.getDao().existsById(pid)) {
       return ResponseEntity.notFound().build();
     }
@@ -88,7 +92,9 @@ public class PostController implements PostApi {
   }
 
   @Override
-  public ResponseEntity<PostDto> get(final @PathVariable(Constant.PID) Integer pid) {
+  public ResponseEntity<PostDto> get(final @PathVariable(Constant.PID) Integer pid,
+                                     final @RequestHeader(value = Constant.UID) Integer uid,
+                                     final @RequestHeader(Constant.P) String password) {
     final Optional<Post> findById = this.postService.getDao().findById(pid);
 
     return findById.isEmpty()
@@ -98,6 +104,8 @@ public class PostController implements PostApi {
 
   @Override
   public ResponseEntity<PostDto> update(final @PathVariable(Constant.PID) Integer pid,
+                                        final @RequestHeader(value = Constant.UID) Integer uid,
+                                        final @RequestHeader(Constant.P) String password,
                                         final @RequestBody NewPostDto newPostDto) {
     if (!this.postService.getDao().existsById(pid)) {
       return ResponseEntity.notFound().build();
@@ -111,6 +119,7 @@ public class PostController implements PostApi {
   @Override
   public ResponseEntity<PostDto> upload(final @PathVariable(Constant.PID) Integer pid,
                                         final @RequestHeader(value = Constant.UID) Integer uid,
+                                        final @RequestHeader(Constant.P) String password,
                                         final @RequestPart(Constant.FILE) MultipartFile file) {
     final Optional<Post> optional = this.postService.getDao().findById(pid);
     if (optional.isEmpty()) {
@@ -163,9 +172,11 @@ public class PostController implements PostApi {
 
   @Override
   public ResponseEntity<Resource> download(final @PathVariable(Constant.PID) Integer pid,
-                                           final @RequestHeader(value = Constant.UID) Integer uid) {
-    // make sure both post and user exist
+                                           final @RequestHeader(value = Constant.UID) Integer uid,
+                                           final @RequestHeader(Constant.P) String password) {
+    // make sure post
     final Optional<Post> optionalPost = this.postService.getDao().findById(pid);
+    // user definitely exists as it passed AuthenticationInterceptor
     final Optional<User> optionalUser = this.userService.getDao().findById(uid);
 
     if (optionalPost.isEmpty() || optionalUser.isEmpty()) {

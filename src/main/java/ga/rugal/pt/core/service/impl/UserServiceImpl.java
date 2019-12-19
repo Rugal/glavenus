@@ -32,7 +32,12 @@ public class UserServiceImpl implements UserService {
     if (optional.isEmpty()) {
       return false;
     }
-    return BCrypt.checkpw(password, optional.get().getPassword());
+    try {
+      return BCrypt.checkpw(password, optional.get().getPassword());
+    } catch (final IllegalArgumentException e) {
+      LOG.error("Unable to check with BCrypt", e);
+    }
+    return false;
   }
 
   /**
@@ -44,6 +49,11 @@ public class UserServiceImpl implements UserService {
     if (optional.isEmpty()) {
       return false;
     }
-    return BCrypt.checkpw(optional.get().getSecret(), secret);
+    try {
+      return BCrypt.checkpw(optional.get().getSecret(), secret);
+    } catch (final IllegalArgumentException e) {
+      LOG.error("Unable to check with BCrypt", e);
+    }
+    return false;
   }
 }

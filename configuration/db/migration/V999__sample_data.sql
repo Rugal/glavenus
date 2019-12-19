@@ -11,9 +11,9 @@ COPY client (cid, version, enable, name) FROM stdin;
 SELECT pg_catalog.setval('client_cid_seq', 4, true);
 
 COPY "user" (uid, password, secret, username, email, upload, download, credit, status) FROM stdin;
-1	123456	1	Rugal	ryujin@163.com	0	0	0	2
-2	123456	1	Spooky	1@163.com	0	0	0	0
-3	123456	1	Adel	test@123.com	0	0	0	2
+1	$2a$10$sVHSogIpWSJBar6/ts9MCOKu/EB0BloC0ikUIzFM4ZVuHQRdjGWy.	1	Rugal	ryujin@163.com	0	0	0	2
+2	$2a$10$sVHSogIpWSJBar6/ts9MCOKu/EB0BloC0ikUIzFM4ZVuHQRdjGWy.	1	Spooky	1@163.com	0	0	0	0
+3	$2a$10$sVHSogIpWSJBar6/ts9MCOKu/EB0BloC0ikUIzFM4ZVuHQRdjGWy.	1	Adel	test@123.com	0	0	0	2
 \.
 
 SELECT pg_catalog.setval('user_uid_seq', 3, true);
