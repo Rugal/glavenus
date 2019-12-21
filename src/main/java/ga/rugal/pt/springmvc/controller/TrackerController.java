@@ -11,6 +11,7 @@ import ga.rugal.pt.core.service.UserService;
 
 import com.turn.ttorrent.bcodec.BeValue;
 import com.turn.ttorrent.bcodec.InvalidBEncodingException;
+import com.turn.ttorrent.tracker.TrackedPeer;
 import com.turn.ttorrent.tracker.TrackedTorrent;
 import com.turn.ttorrent.tracker.TrackerService;
 import lombok.extern.slf4j.Slf4j;
@@ -59,5 +60,15 @@ public class TrackerController extends TrackerService {
   protected boolean beforeUpdate(final TrackedTorrent torrent,
                                  final Map<String, BeValue> parameters) {
     return this.authenticate(parameters).isPresent();
+    //TODO: deny access if user disabled
+    //TODO: deny access if invalid torrent client
+  }
+
+  @Override
+  protected boolean afterUpdate(final TrackedTorrent torrent,
+                                final TrackedPeer peer,
+                                final Map<String, BeValue> parameters) {
+    //TODO: update upload/download information in database
+    return true;
   }
 }

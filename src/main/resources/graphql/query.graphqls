@@ -25,5 +25,3 @@ type Post {
   createAt: Int
   updateAt: Int
 }
-
-
