@@ -30,7 +30,7 @@ CREATE TABLE "user" (
   download bigint,
   upload bigint,
   credit int,
-  status smallint,
+  status int,
   create_at bigint,
   update_at bigint
 );

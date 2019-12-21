@@ -3,6 +3,8 @@ package ga.rugal.pt.core.entity;
 import static config.SystemDefaultProperty.SCHEMA;
 
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -75,7 +77,7 @@ public class User {
   private Integer credit = 0;
 
   @Column
-  private Short status;
+  private Integer status;
 
   @Column(name = "create_at")
   private Long createAt;
@@ -91,5 +93,33 @@ public class User {
   @PreUpdate
   void onUpdate() {
     this.updateAt = Instant.now().getEpochSecond();
+  }
+
+  public String getStatus() {
+    return Status.valueOfCode(this.status).toString();
+  }
+
+  public enum Status {
+
+    VALID(0),
+    BAN(1);
+
+    public final int code;
+
+    Status(final int code) {
+      this.code = code;
+    }
+
+    private static final Map<Integer, Status> BY_CODE = new HashMap<>(2);
+
+    static {
+      for (Status e : Status.values()) {
+        BY_CODE.put(e.code, e);
+      }
+    }
+
+    public static Status valueOfCode(final int code) {
+      return BY_CODE.get(code);
+    }
   }
 }

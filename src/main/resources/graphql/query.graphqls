@@ -12,6 +12,7 @@ type User {
   credit: Int!
   createAt: Int
   updateAt: Int
+  status: String
 }
 
 type Post {
