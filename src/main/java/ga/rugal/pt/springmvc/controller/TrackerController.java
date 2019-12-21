@@ -59,9 +59,17 @@ public class TrackerController extends TrackerService {
   @Override
   protected boolean beforeUpdate(final TrackedTorrent torrent,
                                  final Map<String, BeValue> parameters) {
-    return this.authenticate(parameters).isPresent();
-    //TODO: deny access if user disabled
+    final Optional<User> optionalUser = this.authenticate(parameters);
+    if (optionalUser.isEmpty()) {
+      return false;
+    }
+    final User user = optionalUser.get();
+    if (!user.isValid()) {
+      LOG.info("User [{}] has non-valid status [{}]", user.getUid(), user.getStatus());
+      return false;
+    }
     //TODO: deny access if invalid torrent client
+    return true;
   }
 
   @Override

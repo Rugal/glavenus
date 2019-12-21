@@ -99,6 +99,10 @@ public class User {
     return Status.valueOfCode(this.status).toString();
   }
 
+  public boolean isValid() {
+    return this.status == Status.VALID.code;
+  }
+
   public enum Status {
 
     VALID(0),
