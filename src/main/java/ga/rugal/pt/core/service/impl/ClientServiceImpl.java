@@ -2,7 +2,7 @@ package ga.rugal.pt.core.service.impl;
 
 import java.util.Optional;
 
-import config.SystemDefaultProperty;
+import config.Constant;
 
 import ga.rugal.pt.core.dao.ClientDao;
 import ga.rugal.pt.core.entity.Client;
@@ -40,12 +40,11 @@ public class ClientServiceImpl implements ClientService {
       return optional.get();
     }
     //Get generic client name
-    optional = this.dao.findByNameAndVersion(name, SystemDefaultProperty.STAR);
+    optional = this.dao.findByNameAndVersion(name, Constant.STAR);
     if (optional.isPresent()) {
       return optional.get();
     }
     //Get default client
-    return this.dao.findByNameAndVersion(SystemDefaultProperty.STAR,
-                                         SystemDefaultProperty.STAR).get();
+    return this.dao.findByNameAndVersion(Constant.STAR, Constant.STAR).get();
   }
 }

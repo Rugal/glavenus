@@ -38,6 +38,7 @@
     <ttorrent.version>1.1.0-SNAPSHOT</ttorrent.version>
     <graphql-starter.version>5.0.2</graphql-starter.version>
     <graphql-tool.version>5.2.4</graphql-tool.version>
+    <jsonwebtoken.version>0.10.7</jsonwebtoken.version>
   </properties>
 
   <dependencies>
@@ -162,6 +163,22 @@
       <groupId>org.mindrot</groupId>
       <artifactId>jbcrypt</artifactId>
       <version>0.4</version>
+    </dependency>
+    <!-- jwt -->
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-api</artifactId>
+      <version>${jsonwebtoken.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-impl</artifactId>
+      <version>${jsonwebtoken.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt-jackson</artifactId>
+      <version>${jsonwebtoken.version}</version>
     </dependency>
     <!-- Auto Append -->
   </dependencies>

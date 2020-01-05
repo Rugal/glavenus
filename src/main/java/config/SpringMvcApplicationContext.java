@@ -1,9 +1,14 @@
 package config;
 
+import java.io.UnsupportedEncodingException;
+import javax.crypto.SecretKey;
+
 import ga.rugal.pt.springmvc.controller.PackageInfo;
 import ga.rugal.pt.springmvc.interceptor.AuthenticationInterceptor;
 
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -72,5 +77,11 @@ public class SpringMvcApplicationContext implements WebMvcConfigurer {
     //This is a very important interceptor for authentication usage
     registry.addInterceptor(this.authenticationInterceptor)
             .addPathPatterns("/post/**");
+  }
+
+  @Bean
+  public SecretKey key(final @Value("${application.jwt.secret}") String secret)
+          throws UnsupportedEncodingException {
+    return Keys.hmacShaKeyFor(secret.getBytes(SystemDefaultProperty.ENCODING));
   }
 }

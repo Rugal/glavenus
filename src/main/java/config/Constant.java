@@ -31,4 +31,10 @@ public interface Constant {
   String BITTORRENT_MIME = "application/x-bittorrent";
 
   String TORRENT_SUFFIX = ".torrent";
+
+  String STAR = "*";
+
+  String SUBJECT = "authentication";
+
+  String ISSUER = "pt";
 }
