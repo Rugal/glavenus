@@ -37,7 +37,7 @@ components:
           type: integer
           description: size of each page
           default: 20
-        page:
+        index:
           type: integer
           description: 0 based index of page
           default: 0
@@ -75,7 +75,7 @@ components:
         - $ref: '#/components/schemas/Page'
         - type: object
           properties:
-            posts:
+            items:
               type: array
               items:
                 $ref: '#/components/schemas/Post'
@@ -362,8 +362,8 @@ paths:
             default: 20
             minimum: 1
         - in: query
-          name: page
-          description: 0 based page number
+          name: index
+          description: 0 based page index
           required: false
           schema:
             type: integer

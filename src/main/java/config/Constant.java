@@ -37,4 +37,8 @@ public interface Constant {
   String SUBJECT = "authentication";
 
   String ISSUER = "pt";
+
+  String SIZE = "size";
+
+  String INDEX = "index";
 }

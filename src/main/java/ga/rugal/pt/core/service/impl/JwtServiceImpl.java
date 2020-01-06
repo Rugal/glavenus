@@ -19,7 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 /**
- * Json Web Token service implementation.
+ * Json Web Token service implementation.<BR>
+ * TODO: This service is currently not in use.
  *
  * @author Rugal Bernstein
  */

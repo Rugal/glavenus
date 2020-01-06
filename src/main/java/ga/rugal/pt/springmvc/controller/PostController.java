@@ -17,7 +17,9 @@ import ga.rugal.pt.core.service.UserService;
 import ga.rugal.pt.openapi.api.PostApi;
 import ga.rugal.pt.openapi.model.NewPostDto;
 import ga.rugal.pt.openapi.model.PostDto;
+import ga.rugal.pt.openapi.model.PostPageDto;
 import ga.rugal.pt.springmvc.mapper.PostMapper;
+import ga.rugal.pt.springmvc.mapper.PostPageMapper;
 
 import com.turn.ttorrent.bcodec.BeDecoder;
 import com.turn.ttorrent.bcodec.BeEncoder;
@@ -30,6 +32,9 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -37,6 +42,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -99,7 +105,7 @@ public class PostController implements PostApi {
 
   @Override
   public ResponseEntity<PostDto> update(final @PathVariable(Constant.PID) Integer pid,
-                                        final @RequestHeader(value = Constant.UID) Integer uid,
+                                        final @RequestHeader(Constant.UID) Integer uid,
                                         final @RequestHeader(Constant.P) String password,
                                         final @RequestBody NewPostDto newPostDto) {
     if (!this.postService.getDao().existsById(pid)) {
@@ -113,7 +119,7 @@ public class PostController implements PostApi {
 
   @Override
   public ResponseEntity<PostDto> upload(final @PathVariable(Constant.PID) Integer pid,
-                                        final @RequestHeader(value = Constant.UID) Integer uid,
+                                        final @RequestHeader(Constant.UID) Integer uid,
                                         final @RequestHeader(Constant.P) String password,
                                         final @RequestPart(Constant.FILE) MultipartFile file) {
     final Optional<Post> optional = this.postService.getDao().findById(pid);
@@ -167,7 +173,7 @@ public class PostController implements PostApi {
 
   @Override
   public ResponseEntity<Resource> download(final @PathVariable(Constant.PID) Integer pid,
-                                           final @RequestHeader(value = Constant.UID) Integer uid,
+                                           final @RequestHeader(Constant.UID) Integer uid,
                                            final @RequestHeader(Constant.P) String password) {
     // make sure post
     final Optional<Post> optionalPost = this.postService.getDao().findById(pid);
@@ -198,5 +204,22 @@ public class PostController implements PostApi {
             .header(HttpHeaders.CONTENT_DISPOSITION,
                     String.format("attachment; filename=%s.torrent", post.getHash()))
             .body(new ByteArrayResource(bencode.array()));
+  }
+
+  @Override
+  public ResponseEntity<PostPageDto> getByPage(final @RequestHeader(Constant.UID) Integer uid,
+                                               final @RequestHeader(Constant.P) String password,
+                                               final @RequestParam(
+                                                       value = Constant.SIZE,
+                                                       required = false,
+                                                       defaultValue = "20") Integer size,
+                                               final @RequestParam(
+                                                       value = Constant.INDEX,
+                                                       required = false,
+                                                       defaultValue = "0") Integer index) {
+
+    final Page<Post> findAll = this.postService.getDao().findAll(PageRequest
+            .of(index, size, Sort.Direction.DESC, "createAt"));
+    return ResponseEntity.ok(PostPageMapper.INSTANCE.from(findAll));
   }
 }
