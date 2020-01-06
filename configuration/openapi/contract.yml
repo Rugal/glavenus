@@ -29,6 +29,23 @@ tags:
 
 components:
   schemas:
+    #  --------------------------------page
+    Page:
+      type: object
+      properties:
+        size:
+          type: integer
+          description: size of each page
+          default: 20
+        page:
+          type: integer
+          description: 0 based index of page
+          default: 0
+          minimum: 0
+        total:
+          type: integer
+          description: number of total page
+          minimum: 1
     #  --------------------------------post
     NewPost:
       type: object
@@ -53,6 +70,15 @@ components:
               description: Hash of the torrent file
           required:
             - pid
+    PostPage:
+      allOf:
+        - $ref: '#/components/schemas/Page'
+        - type: object
+          properties:
+            posts:
+              type: array
+              items:
+                $ref: '#/components/schemas/Post'
     #  --------------------------------user
     NewUser:
       type: object
@@ -313,6 +339,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Post'
+        400:
+          $ref: '#/components/schemas/Response400'
+        401:
+          $ref: '#/components/schemas/Response401'
+        403:
+          $ref: '#/components/schemas/Response403'
+        405:
+          $ref: '#/components/schemas/Response405'
+        406:
+          $ref: '#/components/schemas/Response406'
+        409:
+          $ref: '#/components/schemas/Response409'
+    get:
+      parameters:
+        - in: query
+          name: size
+          description: size of each page
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+        - in: query
+          name: page
+          description: 0 based page number
+          required: false
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+      tags:
+        - post
+      summary: Get posts by page
+      operationId: getByPage
+      description: Get posts by specifying page request
+      responses:
+        200:
+          description: Post got
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostPage'
         400:
           $ref: '#/components/schemas/Response400'
         401:
