@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Value;
 @Slf4j
 public class JwtServiceImpl implements JwtService {
 
-  @Value("${application.jwt.expiration}")
+  @Value("${application.jwt.expiration:86400}")
   private Integer expiration;
 
   @Autowired
