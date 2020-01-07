@@ -2,7 +2,7 @@ openapi: 3.0.0
 # Added by API Auto Mocking Plugin
 servers:
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/RugalBernstein/template/1.0.0
+    url: http://localhost:8080
 
 info:
   description: This is a simple API

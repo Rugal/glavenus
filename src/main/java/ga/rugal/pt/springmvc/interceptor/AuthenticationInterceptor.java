@@ -10,6 +10,7 @@ import ga.rugal.pt.core.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -80,6 +81,10 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
   public boolean preHandle(final HttpServletRequest request,
                            final HttpServletResponse response,
                            final Object handler) throws Exception {
+    if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
+      //Allow preflight request
+      return true;
+    }
     final String uid = request.getHeader(Constant.UID);
     final String password = request.getHeader(Constant.PASSWORD);
     if (this.isAuthenticated(uid, password)) {
