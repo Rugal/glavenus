@@ -1,7 +1,7 @@
 openapi: 3.0.0
 # Added by API Auto Mocking Plugin
 servers:
-  - description: SwaggerHub API Auto Mocking
+  - description: Localhost development usage
     url: http://localhost:8080
 
 info:
@@ -28,6 +28,13 @@ tags:
 #  ----------------------------------------------------------
 
 components:
+  securitySchemes:
+    # DO NOT CHANGE THE NEXT LINE
+    bearerAuth:
+    # DO NOT CHANGE THE PREVIOUS LINE
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     #  --------------------------------page
     Page:
@@ -157,19 +164,9 @@ paths:
         required: true
         schema:
           type: integer
-      - in: header
-        name: uid
-        description: User id
-        required: true
-        schema:
-          type: integer
-      - in: header
-        name: password
-        description: User password
-        required: true
-        schema:
-          type: string
     post:
+      security:
+        - bearerAuth: []
       tags:
         - post
         - torrent
@@ -208,6 +205,8 @@ paths:
         409:
           $ref: '#/components/schemas/Response409'
     get:
+      security:
+        - bearerAuth: []
       tags:
         - post
         - torrent
@@ -241,19 +240,9 @@ paths:
         required: true
         schema:
           type: integer
-      - in: header
-        name: uid
-        description: User id
-        required: true
-        schema:
-          type: integer
-      - in: header
-        name: password
-        description: User password
-        required: true
-        schema:
-          type: string
     put:
+      security:
+        - bearerAuth: []
       tags:
         - post
       summary: Update post basic information
@@ -288,6 +277,8 @@ paths:
         406:
           $ref: '#/components/schemas/Response406'
     delete:
+      security:
+        - bearerAuth: []
       tags:
         - post
       summary: Delete post
@@ -306,20 +297,9 @@ paths:
         406:
           $ref: '#/components/schemas/Response406'
   /post:
-    parameters:
-      - in: header
-        name: uid
-        description: User id
-        required: true
-        schema:
-          type: integer
-      - in: header
-        name: password
-        description: User password
-        required: true
-        schema:
-          type: string
     post:
+      security:
+        - bearerAuth: []
       tags:
         - post
       summary: Create post
@@ -352,6 +332,8 @@ paths:
         409:
           $ref: '#/components/schemas/Response409'
     get:
+      security:
+        - bearerAuth: []
       parameters:
         - in: query
           name: size

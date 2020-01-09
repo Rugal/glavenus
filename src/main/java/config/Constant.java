@@ -24,6 +24,10 @@ public interface Constant {
 
   String PID = "pid";
 
+  String TOKEN = "token";
+
+  String AUTHORIZATION = "Authorization";
+
   String FILE = "file";
 
   String ANNOUNCE_TEMPLATE_URL = "http://%s:%d/announce?uid=%d&secret=%s";

@@ -1,13 +1,15 @@
 package ga.rugal.pt.springmvc.interceptor;
 
 import java.io.IOException;
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import config.Constant;
 
-import ga.rugal.pt.core.service.UserService;
+import ga.rugal.pt.core.service.JwtService;
 
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -24,32 +26,12 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class AuthenticationInterceptor implements HandlerInterceptor {
 
   @Autowired
-  private UserService userService;
-
-  /**
-   * This method used put authentication. If you need to check with database, please modify code.
-   *
-   * @param uid      user ID
-   * @param password user password
-   *
-   * @return true if this user and credential meet requirement, otherwise return false
-   */
-  private boolean isAuthenticated(final String uid, final String password) {
-    boolean isAuthenticated = false;
-    try {
-      isAuthenticated = this.userService.authenticate(Integer.parseInt(uid), password);
-    } catch (final NumberFormatException e) {
-      LOG.error(e.getMessage());
-    }
-
-    return isAuthenticated;
-  }
+  private JwtService jwtService;
 
   /**
    * This method is just for generating a response with forbidden content.<BR>
    * May throw IOException inside because unable to get response body writer, but this version will
    * shelter it.
-   *
    *
    * @param response The response corresponding to the request.
    */
@@ -64,10 +46,10 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
   }
 
   /**
-   * This interceptor do its jobs on all business logic handlers.<BR>
-   * Any request that needs authentication must include their {@link Constant#UID} and
-   * {@link Constant#PASSWORD} in plain text in request header.<BR>
-   * Example:<BR> {@code curl -H'uid:1' -H'password:123456'}
+   * This interceptor do its jobs on most of business logic handlers.<BR>
+   * Any request that needs authentication must include their {@link Constant#TOKEN} in request
+   * header.<BR>
+   * Example:<BR> {@code curl -H'Authorization: Bearer XXXX'}
    *
    * @param request  The request that has id and credential information in header
    * @param response The response to user
@@ -82,22 +64,35 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                            final HttpServletResponse response,
                            final Object handler) throws Exception {
     if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
-      LOG.debug("Allow preflight request");
+      LOG.trace("Allow preflight request");
       //Allow preflight request
       return true;
     }
-    final String uid = request.getHeader(Constant.UID);
-    final String password = request.getHeader(Constant.PASSWORD);
-    if (this.isAuthenticated(uid, password)) {
-      //User authenticated, move forward
-      return true;
+
+    final String authorization = request.getHeader(Constant.AUTHORIZATION);
+    if (Objects.isNull(authorization) || authorization.isBlank()) {
+      LOG.warn("Host [{}] try to access [{}] without Json Web Token",
+               request.getRemoteAddr(),
+               request.getRequestURI());
+      return this.denyResponse(response);
     }
-    LOG.warn("User [{}] with password [{}] unable to access [{}] from host [{}]",
-             uid,
-             password,
-             request.getRequestURI(),
-             request.getRemoteAddr());
-    // Flush response
-    return this.denyResponse(response);
+
+    final String[] split = authorization.split(" ", 2);
+    if (split.length < 2 // Invalid Authorization header format
+        || !this.jwtService.isValid(split[1])) { // Invalid jwt
+      LOG.warn("Host [{}] try to access [{}] invalid Json Web Token",
+               request.getRemoteAddr(),
+               request.getRequestURI());
+      return this.denyResponse(response);
+    }
+
+    final Claims claim = this.jwtService.decrypt(split[1]).get();
+    final int uid = (Integer) claim.get(Constant.UID);
+    request.setAttribute(Constant.UID, uid);
+    LOG.debug("User [{}] @ Host [{}] try to access [{}]",
+              uid,
+              request.getRemoteAddr(),
+              request.getRequestURI());
+    return true;
   }
 }

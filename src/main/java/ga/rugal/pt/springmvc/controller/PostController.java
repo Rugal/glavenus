@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
 
 import config.Constant;
 
@@ -41,7 +42,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -72,11 +72,12 @@ public class PostController implements PostApi {
   @Setter
   private UserService userService;
 
-  @Override
-  public ResponseEntity<PostDto> create(final @RequestHeader(Constant.UID) Integer uid,
-                                        final @RequestHeader(Constant.P) String password,
-                                        final @RequestBody NewPostDto newPostDto) {
+  @Autowired
+  private HttpServletRequest request;
 
+  @Override
+  public ResponseEntity<PostDto> create(final @RequestBody NewPostDto newPostDto) {
+    final int uid = (Integer) this.request.getAttribute(Constant.UID);
     // user must exist as it passed AuthenticationInterceptor
     final User author = this.userService.getDao().findById(uid).get();
     final Post newPost = PostMapper.INSTANCE.to(newPostDto);
@@ -93,9 +94,7 @@ public class PostController implements PostApi {
   }
 
   @Override
-  public ResponseEntity<Void> delete(final @PathVariable(Constant.PID) Integer pid,
-                                     final @RequestHeader(Constant.UID) Integer uid,
-                                     final @RequestHeader(Constant.P) String password) {
+  public ResponseEntity<Void> delete(final @PathVariable(Constant.PID) Integer pid) {
     if (!this.postService.getDao().existsById(pid)) {
       return ResponseEntity.notFound().build();
     }
@@ -105,8 +104,6 @@ public class PostController implements PostApi {
 
   @Override
   public ResponseEntity<PostDto> update(final @PathVariable(Constant.PID) Integer pid,
-                                        final @RequestHeader(Constant.UID) Integer uid,
-                                        final @RequestHeader(Constant.P) String password,
                                         final @RequestBody NewPostDto newPostDto) {
     if (!this.postService.getDao().existsById(pid)) {
       return ResponseEntity.notFound().build();
@@ -119,8 +116,6 @@ public class PostController implements PostApi {
 
   @Override
   public ResponseEntity<PostDto> upload(final @PathVariable(Constant.PID) Integer pid,
-                                        final @RequestHeader(Constant.UID) Integer uid,
-                                        final @RequestHeader(Constant.P) String password,
                                         final @RequestPart(Constant.FILE) MultipartFile file) {
     final Optional<Post> optional = this.postService.getDao().findById(pid);
     if (optional.isEmpty()) {
@@ -172,9 +167,8 @@ public class PostController implements PostApi {
   }
 
   @Override
-  public ResponseEntity<Resource> download(final @PathVariable(Constant.PID) Integer pid,
-                                           final @RequestHeader(Constant.UID) Integer uid,
-                                           final @RequestHeader(Constant.P) String password) {
+  public ResponseEntity<Resource> download(final @PathVariable(Constant.PID) Integer pid) {
+    final int uid = (Integer) this.request.getAttribute(Constant.UID);
     // make sure post
     final Optional<Post> optionalPost = this.postService.getDao().findById(pid);
     // user definitely exists as it passed AuthenticationInterceptor
@@ -207,16 +201,14 @@ public class PostController implements PostApi {
   }
 
   @Override
-  public ResponseEntity<PostPageDto> getByPage(final @RequestHeader(Constant.UID) Integer uid,
-                                               final @RequestHeader(Constant.P) String password,
+  public ResponseEntity<PostPageDto> getByPage(final @RequestParam(
+                                                      value = Constant.SIZE,
+                                                      required = false,
+                                                      defaultValue = "20") Integer size,
                                                final @RequestParam(
-                                                       value = Constant.SIZE,
-                                                       required = false,
-                                                       defaultValue = "20") Integer size,
-                                               final @RequestParam(
-                                                       value = Constant.INDEX,
-                                                       required = false,
-                                                       defaultValue = "0") Integer index) {
+                                                      value = Constant.INDEX,
+                                                      required = false,
+                                                      defaultValue = "0") Integer index) {
 
     final Page<Post> findAll = this.postService.getDao().findAll(PageRequest
             .of(index, size, Sort.Direction.DESC, "createAt"));
