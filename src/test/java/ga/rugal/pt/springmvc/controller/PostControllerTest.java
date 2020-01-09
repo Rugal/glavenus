@@ -26,6 +26,7 @@ import ga.rugal.pt.openapi.model.NewPostDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ import org.springframework.test.web.servlet.MockMvc;
  *
  * @author rugal
  */
+@Disabled
 @WebMvcTest(PostController.class)
 public class PostControllerTest extends ControllerUnitTestBase {
 
