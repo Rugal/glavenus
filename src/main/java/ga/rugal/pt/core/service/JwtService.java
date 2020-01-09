@@ -30,4 +30,27 @@ public interface JwtService {
    * @return
    */
   String encrypt(User user);
+
+  /**
+   * Validate against given jwt to see if it has<BR>
+   * 1. Valid signature<BR>
+   * 2. Within expiration<BR>
+   * 3. Valid subject & issuer
+   *
+   * @param jwt
+   *
+   * @return
+   */
+  boolean isValid(String jwt);
+
+  /**
+   * Validate against given jwt claim object to see if it has<BR>
+   * 1. Within expiration<BR>
+   * 2. Valid subject & issuer
+   *
+   * @param claims
+   *
+   * @return
+   */
+  boolean isValid(Claims claims);
 }

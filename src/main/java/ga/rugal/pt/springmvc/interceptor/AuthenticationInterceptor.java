@@ -82,6 +82,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                            final HttpServletResponse response,
                            final Object handler) throws Exception {
     if (request.getMethod().equals(HttpMethod.OPTIONS.name())) {
+      LOG.debug("Allow preflight request");
       //Allow preflight request
       return true;
     }

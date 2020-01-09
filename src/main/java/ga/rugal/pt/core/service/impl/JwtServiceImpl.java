@@ -17,13 +17,14 @@ import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 /**
- * Json Web Token service implementation.<BR>
- * TODO: This service is currently not in use.
+ * Json Web Token service implementation.
  *
  * @author Rugal Bernstein
  */
+@Service
 @Slf4j
 public class JwtServiceImpl implements JwtService {
 
@@ -74,15 +75,40 @@ public class JwtServiceImpl implements JwtService {
    * {@inheritDoc}
    */
   @Override
-  public Optional<Claims> decrypt(final String jws) {
+  public Optional<Claims> decrypt(final String jwt) {
     try {
       // we can safely trust the JWT
       return Optional.of(Jwts.parser()
               .setSigningKey(this.key)
-              .parseClaimsJws(jws).getBody());
+              .parseClaimsJws(jwt).getBody());
     } catch (final JwtException ex) {
-      LOG.error("Invalid signature for JWS [{}]", jws);
+      LOG.error("Invalid signature for JWS [{}]", jwt);
     }
     return Optional.empty();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isValid(final String jwt) {
+    // 1. Valid signature
+    final Optional<Claims> decrypt = this.decrypt(jwt);
+    if (decrypt.isEmpty()) {
+      return false;
+    }
+    return this.isValid(decrypt.get());
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isValid(final Claims claims) {
+    // 2. Valid expiration
+    return claims.getExpiration().compareTo(new Date()) > 0
+           // 3. Valid subject & issuer
+           && claims.getSubject().equals(Constant.SUBJECT)
+           && claims.getIssuer().equals(Constant.ISSUER);
   }
 }

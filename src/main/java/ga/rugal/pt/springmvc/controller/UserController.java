@@ -2,7 +2,10 @@ package ga.rugal.pt.springmvc.controller;
 
 import java.net.URI;
 
+import config.Constant;
+
 import ga.rugal.pt.core.entity.User;
+import ga.rugal.pt.core.service.JwtService;
 import ga.rugal.pt.core.service.UserService;
 import ga.rugal.pt.openapi.api.UserApi;
 import ga.rugal.pt.openapi.model.NewUserDto;
@@ -14,7 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -30,6 +35,9 @@ public class UserController implements UserApi {
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private JwtService jwtService;
 
   @Override
   public ResponseEntity<UserDto> create(final @RequestBody NewUserDto newUserDto) {
@@ -47,5 +55,21 @@ public class UserController implements UserApi {
     return ResponseEntity
             .created(location)
             .body(from);
+  }
+
+  @Override
+  public ResponseEntity<String> login(final @PathVariable(Constant.UID) Integer uid,
+                                      final @RequestHeader(Constant.P) String password) {
+    // Return 401 if unauthenticated
+    if (!this.userService.authenticate(uid, password)) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+    // Create jwt
+    final String jwt = this.jwtService.encrypt(this.userService.getDao().findById(uid).get());
+    final URI location = ServletUriComponentsBuilder
+            .fromCurrentRequest().build().toUri();
+    return ResponseEntity
+            .created(location)
+            .body(jwt);
   }
 }
