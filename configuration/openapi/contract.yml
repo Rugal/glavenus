@@ -417,17 +417,62 @@ paths:
         description: User id
         required: true
         schema:
+          example: 1
           type: integer
       - in: header
         name: password
         description: User password in plain text, do not encrypt
         required: true
         schema:
+          example: 123
           type: string
       tags:
         - user
       summary: Create Json Web Token for user login
-      operationId: login
+      operationId: loginByUid
+      description: Create Json Web Token for user login, so the user credential will only expose once
+      responses:
+        201:
+          description: Json Web Token created
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        400:
+          $ref: '#/components/schemas/Response400'
+        401:
+          $ref: '#/components/schemas/Response401'
+        403:
+          $ref: '#/components/schemas/Response403'
+        405:
+          $ref: '#/components/schemas/Response405'
+        406:
+          $ref: '#/components/schemas/Response406'
+        409:
+          $ref: '#/components/schemas/Response409'
+  /user/email/{email}/token:
+    post:
+      parameters:
+      - in: path
+        name: email
+        description: User email
+        required: true
+        schema:
+          example: test@mail.com
+          format: email
+          type: string
+      - in: header
+        name: password
+        description: User password in plain text, do not encrypt
+        required: true
+        schema:
+          example: 123
+          type: string
+      tags:
+        - user
+      summary: Create Json Web Token for user login
+      operationId: loginByEmail
       description: Create Json Web Token for user login, so the user credential will only expose once
       responses:
         201:

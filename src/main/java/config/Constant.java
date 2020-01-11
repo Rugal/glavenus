@@ -9,6 +9,8 @@ public interface Constant {
 
   String UID = "uid";
 
+  String EMAIL = "email";
+
   String SECRET = "secret";
 
   String PASSWORD = "password";

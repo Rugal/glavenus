@@ -1,6 +1,7 @@
 package ga.rugal.pt.springmvc.controller;
 
 import java.net.URI;
+import java.util.Optional;
 
 import config.Constant;
 
@@ -58,8 +59,13 @@ public class UserController implements UserApi {
   }
 
   @Override
-  public ResponseEntity<String> login(final @PathVariable(Constant.UID) Integer uid,
-                                      final @RequestHeader(Constant.P) String password) {
+  public ResponseEntity<String> loginByUid(final @PathVariable(Constant.UID) Integer uid,
+                                           final @RequestHeader(Constant.P) String password) {
+    final Optional<User> optional = this.userService.getDao().findById(uid);
+    // Return 404 if no user found
+    if (optional.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
     // Return 401 if unauthenticated
     if (!this.userService.authenticate(uid, password)) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -71,5 +77,15 @@ public class UserController implements UserApi {
     return ResponseEntity
             .created(location)
             .body(jwt);
+  }
+
+  @Override
+  public ResponseEntity<String> loginByEmail(final @PathVariable(Constant.EMAIL) String email,
+                                             final @RequestHeader(Constant.P) String password) {
+    final Optional<User> optional = this.userService.getDao().findByEmail(email);
+    if (optional.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
+    return this.loginByUid(optional.get().getUid(), password);
   }
 }
