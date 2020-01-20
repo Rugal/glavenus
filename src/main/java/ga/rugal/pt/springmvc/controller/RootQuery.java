@@ -38,7 +38,6 @@ public class RootQuery implements GraphQLQueryResolver {
   }
 
   public PostPage postPage(final int size, final int index) {
-
     final Page<Post> findAll = this.postService.getDao().findAll(PageRequest
             .of(index, size, Sort.Direction.DESC, "createAt"));
     return new PostPage(findAll.getContent(), size, index, findAll.getTotalPages());
