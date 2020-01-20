@@ -53,6 +53,10 @@ components:
           type: integer
           description: number of total page
           minimum: 1
+      required:
+        - size
+        - index
+        - total
     #  --------------------------------post
     NewPost:
       type: object
@@ -77,6 +81,7 @@ components:
               description: Hash of the torrent file
           required:
             - pid
+            - hash
     PostPage:
       allOf:
         - $ref: '#/components/schemas/Page'
@@ -84,8 +89,11 @@ components:
           properties:
             items:
               type: array
+              required: true
               items:
                 $ref: '#/components/schemas/Post'
+          required:
+            - items
     #  --------------------------------user
     NewUser:
       type: object
@@ -319,50 +327,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Post'
-        400:
-          $ref: '#/components/schemas/Response400'
-        401:
-          $ref: '#/components/schemas/Response401'
-        403:
-          $ref: '#/components/schemas/Response403'
-        405:
-          $ref: '#/components/schemas/Response405'
-        406:
-          $ref: '#/components/schemas/Response406'
-        409:
-          $ref: '#/components/schemas/Response409'
-    get:
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: query
-          name: size
-          description: size of each page
-          required: false
-          schema:
-            type: integer
-            default: 20
-            minimum: 1
-        - in: query
-          name: index
-          description: 0 based page index
-          required: false
-          schema:
-            type: integer
-            default: 0
-            minimum: 0
-      tags:
-        - post
-      summary: Get posts by page
-      operationId: getByPage
-      description: Get posts by specifying page request
-      responses:
-        200:
-          description: Post got
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PostPage'
         400:
           $ref: '#/components/schemas/Response400'
         401:

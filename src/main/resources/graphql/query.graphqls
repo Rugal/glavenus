@@ -1,6 +1,7 @@
 type Query {
-  user(uid: Int): User
-  post(pid: Int): Post
+  user(uid: Int!): User
+  post(pid: Int!): Post
+  postPage(size: Int = 20, index: Int = 0): PostPage!
 }
 
 type User {
@@ -25,4 +26,11 @@ type Post {
   author: User!
   createAt: Int
   updateAt: Int
+}
+
+type PostPage {
+  items: [Post]!
+  size: Int!
+  index: Int!
+  total: Int!
 }
