@@ -11,25 +11,25 @@ type Tag {
 
 type User {
   uid: Int!
-  username: String
-  email: String
+  username: String!
+  email: String!
   download: Int!
   upload: Int!
   credit: Int!
   createAt: Int
   updateAt: Int
-  status: String
+  status: String!
 }
 
 type Post {
   pid: Int!
-  title: String
-  content: String
-  enable: Boolean
-  hash: String
-  size: Int
+  title: String!
+  content: String!
+  enable: Boolean!
+  hash: String!
+  size: Int!
   author: User!
-  tags: [Tag]
+  tags: [Tag!]!
   createAt: Int
   updateAt: Int
 }
