@@ -24,3 +24,38 @@ COPY post (pid, author, title, content, size, enable, hash, torrent) FROM stdin;
 \.
 
 SELECT pg_catalog.setval('post_pid_seq', 2, true);
+
+COPY tag (tid, name) FROM stdin;
+1	BlueRay
+2	YellowRay
+3	RedRay
+4	AnyRay
+5	1080
+6	4K
+7	2K
+8	8K
+9	Embeded
+10	Korea
+11	Japan
+12	China
+13	America
+14	Canada
+15	British
+\.
+
+SELECT pg_catalog.setval('tag_tid_seq', 15, true);
+
+COPY post_tag (ptid, pid, tid) FROM stdin;
+1	1	1
+2	1	2
+3	1	3
+4	1	5
+5	1	7
+6	2	1
+7	2	4
+8	2	9
+9	2	11
+10	2	15
+\.
+
+SELECT pg_catalog.setval('post_tag_ptid_seq', 10, true);

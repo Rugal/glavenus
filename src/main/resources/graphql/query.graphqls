@@ -4,6 +4,11 @@ type Query {
   postPage(size: Int = 20, index: Int = 0): PostPage!
 }
 
+type Tag {
+  tid: Int!
+  name: String!
+}
+
 type User {
   uid: Int!
   username: String
@@ -24,6 +29,7 @@ type Post {
   hash: String
   size: Int
   author: User!
+  tags: [Tag]
   createAt: Int
   updateAt: Int
 }

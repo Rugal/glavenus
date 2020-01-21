@@ -29,11 +29,11 @@ public class RootQuery implements GraphQLQueryResolver {
   @Autowired
   private PostService postService;
 
-  public Optional<User> getUser(final int uid) {
+  public Optional<User> user(final int uid) {
     return this.userService.getDao().findById(uid);
   }
 
-  public Optional<Post> getPost(final int pid) {
+  public Optional<Post> post(final int pid) {
     return this.postService.getDao().findById(pid);
   }
 

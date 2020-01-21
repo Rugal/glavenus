@@ -10,8 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -19,21 +17,20 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Data;
 
 /**
- * Post entity.
+ * Tag entity.<BR>
+ * Represent the declaration of an attribute to be assigned to post.
  *
  * @author Rugal Bernstein
  */
 @Data
 @Entity
-@Table(name = "post", schema = SCHEMA)
-@SuppressFBWarnings({"EI_EXPOSE_REP", "EI_EXPOSE_REP2"})
-public class Post {
+@Table(name = "tag", schema = SCHEMA)
+public class Tag {
 
-  private static final String SEQUENCE_NAME = "post_pid_seq";
+  private static final String SEQUENCE_NAME = "tag_tid_seq";
 
   @Basic(optional = false)
   @Column
@@ -41,39 +38,14 @@ public class Post {
   @Id
   @SequenceGenerator(name = SEQUENCE_NAME, allocationSize = 1,
                      sequenceName = SCHEMA + "." + SEQUENCE_NAME)
-  private Integer pid;
-
-  @Size(max = 100)
-  @Column(length = 100)
-  private String title;
-
-  @Size(max = 2147483647)
-  @Column(length = 2147483647)
-  private String content;
-
-  /**
-   * Disable post by default.<BR>
-   * Only enable post after 1. torrent file uploaded, verified 2. post published.
-   */
-  @Column
-  private Boolean enable = false;
+  private Integer tid;
 
   @Size(max = 50)
   @Column(length = 50)
-  private String hash;
+  private String name;
 
-  @Column
-  private byte[] torrent;
-
-  @Column
-  private Long size;
-
-  @JoinColumn(name = "author", referencedColumnName = "uid")
-  @ManyToOne
-  private User author;
-
-  @OneToMany(mappedBy = "post")
-  private List<PostTag> tags;
+  @OneToMany(mappedBy = "tag")
+  private List<PostTag> postTags;
 
   @Column(name = "create_at")
   private Long createAt;

@@ -68,6 +68,21 @@ CREATE TABLE announce (
   update_at bigint
 );
 
+CREATE TABLE tag (
+  tid serial PRIMARY KEY,
+  name character varying(50),
+  create_at bigint,
+  update_at bigint
+);
+
+CREATE TABLE post_tag (
+  ptid serial PRIMARY KEY,
+  tid integer REFERENCES tag(tid),
+  pid integer REFERENCES post(pid),
+  create_at bigint,
+  update_at bigint
+);
+
 --
 -- PostgreSQL database dump complete
 --
