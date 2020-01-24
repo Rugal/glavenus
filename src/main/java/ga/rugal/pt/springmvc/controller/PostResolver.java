@@ -7,6 +7,7 @@ import ga.rugal.pt.core.entity.Post;
 import ga.rugal.pt.core.entity.Tag;
 import ga.rugal.pt.core.entity.User;
 import ga.rugal.pt.core.service.PostTagService;
+import ga.rugal.pt.core.service.ReviewService;
 
 import com.coxautodev.graphql.tools.GraphQLResolver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,17 @@ import org.springframework.stereotype.Component;
 public class PostResolver implements GraphQLResolver<Post> {
 
   @Autowired
+  private ReviewService reviewService;
+
+  @Autowired
   private PostTagService postTagService;
 
   public User author(final Post p) {
     return p.getAuthor();
+  }
+
+  public Double rate(final Post p) {
+    return this.reviewService.getDao().getRateByPost(p);
   }
 
   public List<Tag> tags(final Post p) {

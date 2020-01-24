@@ -59,3 +59,14 @@ COPY post_tag (ptid, pid, tid) FROM stdin;
 \.
 
 SELECT pg_catalog.setval('post_tag_ptid_seq', 10, true);
+
+COPY review (rid, pid, uid, content, rate) FROM stdin;
+1	1	1	rugal	5
+2	1	2	rugal	4
+3	1	3	rugal	2
+4	2	1	rugal	1
+5	2	2	rugal	3
+6	2	3	rugal	2
+\.
+
+SELECT pg_catalog.setval('review_rid_seq', 6, true);

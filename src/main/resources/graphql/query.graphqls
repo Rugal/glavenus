@@ -2,6 +2,7 @@ type Query {
   user(uid: Int!): User
   post(pid: Int!): Post
   postPage(size: Int = 20, index: Int = 0): PostPage!
+  reviewPage(pid: Int!, size: Int = 20, index: Int = 0): ReviewPage!
 }
 
 type Tag {
@@ -30,12 +31,29 @@ type Post {
   size: Int!
   author: User!
   tags: [Tag!]!
+  rate: Float!
   createAt: Int
   updateAt: Int
 }
 
 type PostPage {
   items: [Post]!
+  size: Int!
+  index: Int!
+  total: Int!
+}
+
+type Review {
+  rid: Int!
+  content: String!
+  rate: Int!
+  author: User!
+  createAt: Int
+  updateAt: Int
+}
+
+type ReviewPage {
+  items: [Review]!
   size: Int!
   index: Int!
   total: Int!

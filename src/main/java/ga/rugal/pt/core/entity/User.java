@@ -76,6 +76,9 @@ public class User {
   @Column
   private Integer credit = 0;
 
+  /**
+   * Default as 0.
+   */
   @Column
   private Integer status;
 

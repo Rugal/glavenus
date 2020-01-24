@@ -83,6 +83,16 @@ CREATE TABLE post_tag (
   update_at bigint
 );
 
+CREATE TABLE review (
+  rid serial PRIMARY KEY,
+  uid integer REFERENCES "user"(uid),
+  pid integer REFERENCES post(pid),
+  content text,
+  rate integer,
+  create_at bigint,
+  update_at bigint
+);
+
 --
 -- PostgreSQL database dump complete
 --

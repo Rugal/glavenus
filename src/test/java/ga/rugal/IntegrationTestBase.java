@@ -1,6 +1,7 @@
 package ga.rugal;
 
 import config.ApplicationContext;
+import config.SpringMvcApplicationContext;
 import config.TestApplicationContext;
 
 import org.junit.jupiter.api.Disabled;
@@ -15,7 +16,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
  *
  * @author Rugal Bernstein
  */
-@ContextConfiguration(classes = {TestApplicationContext.class, ApplicationContext.class})
+@ContextConfiguration(classes = {TestApplicationContext.class,
+                                 ApplicationContext.class,
+                                 SpringMvcApplicationContext.class,})
 @Disabled
 @ExtendWith(SpringExtension.class)
 @SpringBootTest

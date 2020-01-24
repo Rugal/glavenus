@@ -8,6 +8,7 @@ import ga.rugal.pt.core.entity.PackageInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -76,6 +77,7 @@ public class ApplicationContext {
   private String url;
 
   @Bean
+  @ConditionalOnMissingBean
   public ObjectMapper objectMapper() {
     return new ObjectMapper();
   }
