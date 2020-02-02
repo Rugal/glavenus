@@ -47,4 +47,6 @@ public interface Constant {
   String SIZE = "size";
 
   String INDEX = "index";
+
+  String PEER_ID = "peer_id";
 }

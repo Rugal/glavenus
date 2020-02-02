@@ -3,10 +3,15 @@ package ga.rugal.pt.springmvc.controller;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import config.Constant;
+import config.SystemDefaultProperty;
 
+import ga.rugal.pt.core.entity.Client;
 import ga.rugal.pt.core.entity.User;
+import ga.rugal.pt.core.service.ClientService;
 import ga.rugal.pt.core.service.UserService;
 
 import com.turn.ttorrent.bcodec.BeValue;
@@ -27,6 +32,9 @@ public class TrackerController extends TrackerService {
 
   @Autowired
   private UserService userService;
+
+  @Autowired
+  private ClientService clientService;
 
   public TrackerController(final ConcurrentMap<String, TrackedTorrent> torrents) {
     super(torrents);
@@ -56,6 +64,38 @@ public class TrackerController extends TrackerService {
     return Optional.empty();
   }
 
+  /**
+   * Validate client by checking peer_id from user announce request.
+   *
+   * @param user       user object
+   * @param parameters all request parameters
+   *
+   * @return true if the client exists and enabled, otherwise return false
+   */
+  private boolean validateClient(final User user, final Map<String, BeValue> parameters) {
+    if (!parameters.containsKey(Constant.PEER_ID)) {
+      LOG.info("User [{}] does not have peer_id [{}]", user.getUid());
+      return false;
+    }
+    try {
+      //Format /^-\w{2}\d{4}-\w{12}$/ for instance -AZ2060-XXXXXXXXXXXX
+      final String rawPeerId = parameters.get(Constant.PEER_ID).getString();
+      final Matcher matcher = Pattern.compile(SystemDefaultProperty.PEER_ID_PATTERN)
+              .matcher(rawPeerId);
+      if (!matcher.find()) {
+        LOG.info("User [{}] has invalid peer_id [{}]", user.getUid(), rawPeerId);
+        return false;
+      }
+      final String peerId = matcher.group(1);
+      final Client client = this.clientService.findByPeerId(peerId.substring(0, 2),
+                                                            peerId.substring(2));
+      return client.getEnable();
+    } catch (final InvalidBEncodingException ex) {
+      LOG.info("User [{}] has invalid peer_id encoding", user.getUid());
+      return false;
+    }
+  }
+
   @Override
   protected boolean beforeUpdate(final TrackedTorrent torrent,
                                  final Map<String, BeValue> parameters) {
@@ -64,12 +104,13 @@ public class TrackerController extends TrackerService {
       return false;
     }
     final User user = optionalUser.get();
+    // deny access if invalid user status(like banned etc.,)
     if (!user.isValid()) {
       LOG.info("User [{}] has non-valid status [{}]", user.getUid(), user.getStatus());
       return false;
     }
-    //TODO: deny access if invalid torrent client
-    return true;
+
+    return this.validateClient(user, parameters);
   }
 
   @Override
