@@ -24,6 +24,8 @@ tags:
   description: 
 - name: user
   description: 
+- name: tag
+  description: 
 
 #  ----------------------------------------------------------
 
@@ -142,6 +144,29 @@ components:
         - download
         - upload
         - credit
+    #  --------------------------------tag
+    NewTag:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Object for creating new tag
+          example: BlueRay
+      required:
+        - name
+    Tag:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/NewTag'
+        - type: object
+          properties:
+            tid:
+              description: Id of tag
+              type: integer
+              example: 1
+          required:
+            - tid
+            - name
     #  --------------------------------basic
     Response204:
       description:  Resource deleted
@@ -446,6 +471,40 @@ paths:
               schema:
                 type: string
                 example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        400:
+          $ref: '#/components/schemas/Response400'
+        401:
+          $ref: '#/components/schemas/Response401'
+        403:
+          $ref: '#/components/schemas/Response403'
+        405:
+          $ref: '#/components/schemas/Response405'
+        406:
+          $ref: '#/components/schemas/Response406'
+        409:
+          $ref: '#/components/schemas/Response409'
+#  --------------------------------
+  /tag:
+    post:
+      tags:
+        - tag
+      summary: Attach post with tag
+      operationId: create
+      description: Attach post with tag to denote its attribute
+      requestBody:
+        description: Basic tag object to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewTag'
+      responses:
+        201:
+          description: Tag created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
         400:
           $ref: '#/components/schemas/Response400'
         401:
