@@ -13,7 +13,7 @@ type Tag {
 type User {
   uid: Int!
   username: String!
-  email: String!
+  email: String! @fake(type: email)
   download: Int!
   upload: Int!
   credit: Int!
@@ -25,36 +25,36 @@ type User {
 type Post {
   pid: Int!
   title: String!
-  content: String!
+  content: String! @fake(type: lorem)
   enable: Boolean!
   hash: String!
   size: Int!
   author: User!
-  tags: [Tag!]!
-  rate: Float!
+  tags: [Tag!]! @listLength(min: 0, max: 5)
+  rate: Float! @fake(type: number, options: {minNumber: 0, maxNumber: 5})
   createAt: Int
   updateAt: Int
 }
 
 type PostPage {
-  items: [Post!]!
-  size: Int!
-  index: Int!
-  total: Int!
+  items: [Post!]! @listLength(min: 0, max: 20)
+  size: Int! @examples(values: [20])
+  index: Int! @examples(values: [0])
+  total: Int! @examples(values: [1])
 }
 
 type Review {
   rid: Int!
   content: String!
-  rate: Int!
+  rate: Int! @fake(type: number, options: {minNumber: 0, maxNumber: 5})
   author: User!
   createAt: Int
   updateAt: Int
 }
 
 type ReviewPage {
-  items: [Review!]!
-  size: Int!
-  index: Int!
-  total: Int!
+  items: [Review!]! @listLength(min: 0, max: 20)
+  size: Int! @examples(values: [20])
+  index: Int! @examples(values: [0])
+  total: Int! @examples(values: [1])
 }
