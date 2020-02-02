@@ -12,13 +12,19 @@ import javax.servlet.http.HttpServletRequest;
 import config.Constant;
 
 import ga.rugal.pt.core.entity.Post;
+import ga.rugal.pt.core.entity.PostTag;
+import ga.rugal.pt.core.entity.Tag;
 import ga.rugal.pt.core.entity.User;
 import ga.rugal.pt.core.service.PostService;
+import ga.rugal.pt.core.service.PostTagService;
+import ga.rugal.pt.core.service.TagService;
 import ga.rugal.pt.core.service.UserService;
 import ga.rugal.pt.openapi.api.PostApi;
 import ga.rugal.pt.openapi.model.NewPostDto;
 import ga.rugal.pt.openapi.model.PostDto;
+import ga.rugal.pt.openapi.model.PostTagDto;
 import ga.rugal.pt.springmvc.mapper.PostMapper;
+import ga.rugal.pt.springmvc.mapper.PostTagMapper;
 
 import com.turn.ttorrent.bcodec.BeDecoder;
 import com.turn.ttorrent.bcodec.BeEncoder;
@@ -52,10 +58,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @Slf4j
 public class PostController implements PostApi {
 
-  @javax.annotation.Resource(name = "host")
+  @javax.annotation.Resource(name = Constant.HOST)
   private String host;
 
-  @javax.annotation.Resource(name = "port")
+  @javax.annotation.Resource(name = Constant.PORT)
   private int port;
 
   @Autowired
@@ -65,6 +71,14 @@ public class PostController implements PostApi {
   @Autowired
   @Setter
   private UserService userService;
+
+  @Autowired
+  @Setter
+  private TagService tagService;
+
+  @Autowired
+  @Setter
+  private PostTagService postTagService;
 
   @Autowired
   private HttpServletRequest request;
@@ -192,5 +206,45 @@ public class PostController implements PostApi {
             .header(HttpHeaders.CONTENT_DISPOSITION,
                     String.format("attachment; filename=%s.torrent", post.getHash()))
             .body(new ByteArrayResource(bencode.array()));
+  }
+
+  @Override
+  public ResponseEntity<PostTagDto> attach(final @PathVariable(Constant.PID) Integer pid,
+                                           final @PathVariable(Constant.TID) Integer tid) {
+    final Optional<Post> optionalPost = this.postService.getDao().findById(pid);
+    final Optional<Tag> optionalTag = this.tagService.getDao().findById(tid);
+    if (optionalPost.isEmpty() || optionalTag.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
+    final PostTag postTag = new PostTag();
+    postTag.setPost(optionalPost.get());
+    postTag.setTag(optionalTag.get());
+
+    final PostTag save = this.postTagService.getDao().save(postTag);
+    final PostTagDto postTagDto = PostTagMapper.INSTANCE.from(save);
+    final URI location = ServletUriComponentsBuilder.fromCurrentRequest().buildAndExpand().toUri();
+
+    return ResponseEntity
+            .created(location)
+            .body(postTagDto);
+  }
+
+  @Override
+  public ResponseEntity<Void> detach(final @PathVariable(Constant.PID) Integer pid,
+                                     final @PathVariable(Constant.TID) Integer tid) {
+    final Optional<Post> optionalPost = this.postService.getDao().findById(pid);
+    final Optional<Tag> optionalTag = this.tagService.getDao().findById(tid);
+    // post and tag not found
+    if (optionalPost.isEmpty() || optionalTag.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
+    final Optional<PostTag> optionalPostTag = this.postTagService.getDao()
+            .findByPostAndTag(optionalPost.get(), optionalTag.get());
+    // PostTag object not found
+    if (optionalPostTag.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
+    this.postTagService.getDao().delete(optionalPostTag.get());
+    return ResponseEntity.noContent().build();
   }
 }

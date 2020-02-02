@@ -167,6 +167,26 @@ components:
           required:
             - tid
             - name
+    #  --------------------------------post tag
+    PostTag:
+      type: object
+      properties:
+        ptid:
+          type: integer
+          description: PostTag identifier
+          example: 1
+        tid:
+          description: Id of tag
+          type: integer
+          example: 1
+        pid:
+          description: Id of post
+          type: integer
+          example: 1
+      required:
+        - ptid
+        - pid
+        - tid
     #  --------------------------------basic
     Response204:
       description:  Resource deleted
@@ -364,6 +384,71 @@ paths:
           $ref: '#/components/schemas/Response406'
         409:
           $ref: '#/components/schemas/Response409'
+  /post/{pid}/tag/{tid}:
+    parameters:
+      - in: path
+        name: pid
+        description: Post Id
+        required: true
+        schema:
+          example: 1
+          type: integer
+      - in: path
+        name: tid
+        description: Tag Id
+        required: true
+        schema:
+          example: 1
+          type: integer
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - post        
+        - tag
+      summary: Attach post with tag
+      operationId: attach
+      description: Attach post with tag to denote its attribute
+      responses:
+        201:
+          description: Tag attached
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostTag'
+        400:
+          $ref: '#/components/schemas/Response400'
+        401:
+          $ref: '#/components/schemas/Response401'
+        403:
+          $ref: '#/components/schemas/Response403'
+        405:
+          $ref: '#/components/schemas/Response405'
+        406:
+          $ref: '#/components/schemas/Response406'
+        409:
+          $ref: '#/components/schemas/Response409'
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - post
+        - tag
+      summary: Detach tag from post
+      operationId: detach
+      responses:
+        204:
+          $ref: '#/components/schemas/Response204'
+        401:
+          $ref: '#/components/schemas/Response401'
+        403:
+          $ref: '#/components/schemas/Response403'
+        404:
+          $ref: '#/components/schemas/Response404'
+        405:
+          $ref: '#/components/schemas/Response405'
+        406:
+          $ref: '#/components/schemas/Response406'
 #  --------------------------------user
   /user:
     post:
@@ -486,11 +571,13 @@ paths:
 #  --------------------------------
   /tag:
     post:
+      security:
+        - bearerAuth: []
       tags:
         - tag
-      summary: Attach post with tag
+      summary: Create new tag
       operationId: create
-      description: Attach post with tag to denote its attribute
+      description: Create tag for the very first time
       requestBody:
         description: Basic tag object to be created
         required: true

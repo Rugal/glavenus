@@ -26,6 +26,8 @@ public interface Constant {
 
   String PID = "pid";
 
+  String TID = "tid";
+
   String TOKEN = "token";
 
   String AUTHORIZATION = "Authorization";
