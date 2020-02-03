@@ -1,5 +1,7 @@
 package ga.rugal.pt.core.dao;
 
+import java.util.List;
+
 import ga.rugal.pt.core.entity.Post;
 import ga.rugal.pt.core.entity.Review;
 import ga.rugal.pt.core.entity.User;
@@ -10,6 +12,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ReviewDao extends CrudRepository<Review, Integer> {
+
+  List<Review> findByPost(Post post);
 
   Page<Review> findByPost(Post post, Pageable pageable);
 

@@ -7,12 +7,12 @@ type Query {
 
 type Tag {
   tid: Int!
-  name: String!
+  name: String! @fake(type: colorName)
 }
 
 type User {
   uid: Int!
-  username: String!
+  username: String! @fake(type: firstName)
   email: String! @fake(type: email)
   download: Int!
   upload: Int!
@@ -24,20 +24,21 @@ type User {
 
 type Post {
   pid: Int!
-  title: String!
+  title: String! @fake(type: fullName)
   content: String! @fake(type: lorem)
   enable: Boolean!
-  hash: String!
+  hash: String! @examples(values: ["5C84616F2E28D03BF9C127D7BCCAA4CF0FD57B43", "A12F4E3EFEDC35937670811147A076BC596176CA"])
   size: Int!
   author: User!
   tags: [Tag!]! @listLength(min: 0, max: 5)
   rate: Float! @fake(type: number, options: {minNumber: 0, maxNumber: 5})
+  reviews: [Review!]! @listLength(min: 0, max: 10)
   createAt: Int
   updateAt: Int
 }
 
 type PostPage {
-  items: [Post!]! @listLength(min: 0, max: 20)
+  items: [Post!]! @listLength(min: 1, max: 20)
   size: Int! @examples(values: [20])
   index: Int! @examples(values: [0])
   total: Int! @examples(values: [1])
@@ -45,7 +46,7 @@ type PostPage {
 
 type Review {
   rid: Int!
-  content: String!
+  content: String! @fake(type: lorem)
   rate: Int! @fake(type: number, options: {minNumber: 0, maxNumber: 5})
   author: User!
   createAt: Int

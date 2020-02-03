@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ga.rugal.pt.core.entity.Post;
+import ga.rugal.pt.core.entity.Review;
 import ga.rugal.pt.core.entity.Tag;
 import ga.rugal.pt.core.entity.User;
 import ga.rugal.pt.core.service.PostTagService;
@@ -39,5 +40,9 @@ public class PostResolver implements GraphQLResolver<Post> {
     return this.postTagService.getDao().findByPost(p).stream()
             .map(pt -> pt.getTag())
             .collect(Collectors.toList());
+  }
+
+  public List<Review> reviews(final Post p) {
+    return this.reviewService.getDao().findByPost(p);
   }
 }
