@@ -38,6 +38,7 @@
     <ttorrent.version>1.1.0-SNAPSHOT</ttorrent.version>
     <graphql-starter.version>5.0.2</graphql-starter.version>
     <graphql-tool.version>5.2.4</graphql-tool.version>
+    <graphql-kickstart.version>6.0.1</graphql-kickstart.version>
     <jsonwebtoken.version>0.10.7</jsonwebtoken.version>
   </properties>
 
@@ -133,21 +134,35 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
     </dependency>
-    <!-- graphql -->
+    <!-- 
+      graphql 
+    -->
+    <dependency>
+      <groupId>com.graphql-java</groupId>
+      <artifactId>graphql-java-tools</artifactId>
+      <version>${graphql-tool.version}</version>
+    </dependency>
     <dependency>
       <groupId>com.graphql-java</groupId>
       <artifactId>graphql-spring-boot-starter</artifactId>
       <version>${graphql-starter.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.graphql-java</groupId>
-      <artifactId>graphiql-spring-boot-starter</artifactId>
-      <version>${graphql-starter.version}</version>
+      <groupId>com.graphql-java-kickstart</groupId>
+      <artifactId>voyager-spring-boot-starter</artifactId>
+      <version>${graphql-kickstart.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.graphql-java</groupId>
-      <artifactId>graphql-java-tools</artifactId>
-      <version>${graphql-tool.version}</version>
+      <groupId>com.graphql-java-kickstart</groupId>
+      <artifactId>playground-spring-boot-starter</artifactId>
+      <version>${graphql-kickstart.version}</version>
+    </dependency>
+    <!-- test -->
+    <dependency>
+      <groupId>com.graphql-java-kickstart</groupId>
+      <artifactId>graphql-spring-boot-starter-test</artifactId>
+      <version>${graphql-kickstart.version}</version>
+      <scope>test</scope>
     </dependency>
     <!-- spotbugs -->
     <dependency>
