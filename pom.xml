@@ -5,7 +5,7 @@
   <parent>
     <groupId>ga.rugal</groupId>
     <artifactId>parent</artifactId>
-    <version>1.5.0</version>
+    <version>1.7.0</version>
   </parent>
 
   <artifactId>pt</artifactId>
@@ -15,9 +15,9 @@
   <url>https://rug.al</url>
 
   <scm>
-    <connection>scm:git:git@github.com:Rugal/spring-boot-template.git</connection>
-    <developerConnection>scm:git:git@github.com:Rugal/spring-boot-template.git</developerConnection>
-    <url>https://github.com/Rugal/spring-boot-template</url>
+    <connection>scm:git:git@github.com:Rugal/glavenus.git</connection>
+    <developerConnection>scm:git:git@github.com:Rugal/glavenus.git</developerConnection>
+    <url>https://github.com/Rugal/glavenus</url>
     <tag>HEAD</tag>
   </scm>
 
@@ -40,6 +40,7 @@
     <graphql-tool.version>5.2.4</graphql-tool.version>
     <graphql-kickstart.version>6.0.1</graphql-kickstart.version>
     <jsonwebtoken.version>0.10.7</jsonwebtoken.version>
+    <jbcrypt.version>0.4</jbcrypt.version>
   </properties>
 
   <dependencies>
@@ -79,14 +80,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-      <!-- exclude junit 4 -->
-      <exclusions>
-        <exclusion>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-        </exclusion>
-      </exclusions>
+      <version>${spring.boot.dependency.version}</version>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -96,7 +90,6 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.github.javafaker</groupId>
@@ -114,7 +107,6 @@
     <dependency>
       <groupId>org.flywaydb</groupId>
       <artifactId>flyway-core</artifactId>
-      <!--<version>6.1.3</version>-->
     </dependency>
     <!-- swagger -->
     <dependency>
@@ -178,7 +170,7 @@
     <dependency>
       <groupId>org.mindrot</groupId>
       <artifactId>jbcrypt</artifactId>
-      <version>0.4</version>
+      <version>${jbcrypt.version}</version>
     </dependency>
     <!-- jwt -->
     <dependency>
