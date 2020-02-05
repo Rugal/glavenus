@@ -34,7 +34,7 @@ public class TrackerContext {
   }
 
   @Bean
-  public int port(final @Value("${server.port:6969}") int port) {
+  public Integer port(final @Value("${server.port:6969}") int port) {
     return port;
   }
 
@@ -68,7 +68,7 @@ public class TrackerContext {
   public Tracker tracker(final PostService postService,
                          final TrackerService service,
                          final @Qualifier(Constant.HOST) String host,
-                         final @Qualifier(Constant.PORT) int port)
+                         final @Qualifier(Constant.PORT) Integer port)
           throws IOException, NoSuchAlgorithmException {
 
     final Tracker tracker = new Tracker(new InetSocketAddress(host, port), service);

@@ -37,7 +37,7 @@ public class TestApplicationContext {
   
   @Bean
   @ConditionalOnMissingBean
-  public int port(final @Value("${server.port:6969}") int port) {
+  public Integer port(final @Value("${server.port:6969}") int port) {
     return port;
   }
   
