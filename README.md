@@ -14,7 +14,7 @@ Please install `docker` and `docker-compose`.
 At the root directory run the following command:  
 
 ```bash
-docker-compose up
+docker-compose -f configuration/docker/docker-compose.yml up
 ```
 
 The default user is `postgres`, password is `123`

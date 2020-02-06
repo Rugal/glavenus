@@ -8,6 +8,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ClientDao extends CrudRepository<Client, Integer> {
 
-  //findOne, delete, save, count, etc., are inherited from CruiRepository
   Optional<Client> findByNameAndVersion(String name, String version);
 }
