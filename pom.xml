@@ -23,7 +23,7 @@
 
   <ciManagement>
     <system>circleci</system>
-    <url>https://circleci.com/gh/Rugal/spring-boot-template</url>
+    <url>https://circleci.com/gh/Rugal/glavenus</url>
   </ciManagement>
 
   <properties>
