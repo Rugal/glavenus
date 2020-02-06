@@ -36,6 +36,13 @@ public class PostResolver implements GraphQLResolver<Post> {
     return this.reviewService.getDao().getRateByPost(p);
   }
 
+  /**
+   * Resolve tags for post.
+   *
+   * @param p
+   *
+   * @return tags for post
+   */
   public List<Tag> tags(final Post p) {
     return this.postTagService.getDao().findByPost(p).stream()
             .map(pt -> pt.getTag())

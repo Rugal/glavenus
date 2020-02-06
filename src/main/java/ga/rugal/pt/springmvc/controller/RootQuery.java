@@ -44,12 +44,29 @@ public class RootQuery implements GraphQLQueryResolver {
     return this.postService.getDao().findById(pid);
   }
 
+  /**
+   * Get PostPage.
+   *
+   * @param size  page size, default as 20
+   * @param index page index, start from 0
+   *
+   * @return PostPage object
+   */
   public PostPage postPage(final int size, final int index) {
     final Page<Post> findAll = this.postService.getDao().findAll(PageRequest
             .of(index, size, Sort.Direction.DESC, "createAt"));
     return new PostPage(findAll.getContent(), size, index, findAll.getTotalPages());
   }
 
+  /**
+   * Get ReviewPage for a post.
+   *
+   * @param pid   pid for post
+   * @param size  page size, default as 20
+   * @param index page index, start from 0
+   *
+   * @return ReviewPage object
+   */
   public ReviewPage reviewPage(final int pid, final int size, final int index) {
     final Optional<Post> optional = this.postService.getDao().findById(pid);
     if (optional.isEmpty()) {

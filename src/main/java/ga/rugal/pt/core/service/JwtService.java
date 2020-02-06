@@ -18,7 +18,7 @@ public interface JwtService {
    *
    * @param jwt
    *
-   * @return
+   * @return optional claims object
    */
   Optional<Claims> decrypt(String jwt);
 
@@ -27,7 +27,7 @@ public interface JwtService {
    *
    * @param user
    *
-   * @return
+   * @return JWT string
    */
   String encrypt(User user);
 
@@ -39,7 +39,7 @@ public interface JwtService {
    *
    * @param jwt
    *
-   * @return
+   * @return true if JWT is well formatted and signature valid
    */
   boolean isValid(String jwt);
 
@@ -50,7 +50,7 @@ public interface JwtService {
    *
    * @param claims
    *
-   * @return
+   * @return true if JWT is well formatted and signature valid
    */
   boolean isValid(Claims claims);
 }

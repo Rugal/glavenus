@@ -5,7 +5,7 @@
   <parent>
     <groupId>ga.rugal</groupId>
     <artifactId>parent</artifactId>
-    <version>1.7.0</version>
+    <version>1.8.0</version>
   </parent>
 
   <artifactId>pt</artifactId>
@@ -36,9 +36,6 @@
       dependency
     -->
     <ttorrent.version>1.1.0-SNAPSHOT</ttorrent.version>
-    <graphql-starter.version>5.0.2</graphql-starter.version>
-    <graphql-tool.version>5.2.4</graphql-tool.version>
-    <graphql-kickstart.version>6.0.1</graphql-kickstart.version>
     <jsonwebtoken.version>0.10.7</jsonwebtoken.version>
     <jbcrypt.version>0.4</jbcrypt.version>
   </properties>
@@ -80,7 +77,6 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>${spring.boot.dependency.version}</version>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -132,28 +128,23 @@
     <dependency>
       <groupId>com.graphql-java</groupId>
       <artifactId>graphql-java-tools</artifactId>
-      <version>${graphql-tool.version}</version>
     </dependency>
     <dependency>
       <groupId>com.graphql-java</groupId>
       <artifactId>graphql-spring-boot-starter</artifactId>
-      <version>${graphql-starter.version}</version>
     </dependency>
     <dependency>
       <groupId>com.graphql-java-kickstart</groupId>
       <artifactId>voyager-spring-boot-starter</artifactId>
-      <version>${graphql-kickstart.version}</version>
     </dependency>
     <dependency>
       <groupId>com.graphql-java-kickstart</groupId>
       <artifactId>playground-spring-boot-starter</artifactId>
-      <version>${graphql-kickstart.version}</version>
     </dependency>
     <!-- test -->
     <dependency>
       <groupId>com.graphql-java-kickstart</groupId>
       <artifactId>graphql-spring-boot-starter-test</artifactId>
-      <version>${graphql-kickstart.version}</version>
       <scope>test</scope>
     </dependency>
     <!-- spotbugs -->
