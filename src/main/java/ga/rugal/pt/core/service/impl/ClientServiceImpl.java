@@ -44,7 +44,19 @@ public class ClientServiceImpl implements ClientService {
     if (optional.isPresent()) {
       return optional.get();
     }
-    //Get default client
+    //Get default client, guarantee to present
     return this.dao.findByNameAndVersion(Constant.STAR, Constant.STAR).get();
+  }
+
+  /**
+   * Get client object by peer_id string.
+   *
+   * @param peerId format like /^\w{2}\d{4}$/ -> AZ2060
+   *
+   * @return client object that represents a torrent software
+   */
+  @Override
+  public Client findByPeerId(final String peerId) {
+    return this.findByPeerId(peerId.substring(0, 2), peerId.substring(2));
   }
 }

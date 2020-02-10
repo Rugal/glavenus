@@ -16,6 +16,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -23,6 +24,7 @@ import lombok.Data;
  *
  * @author Rugal Bernstein
  */
+@Builder
 @Data
 @Entity
 @Table(name = "announce", schema = SCHEMA)
@@ -38,17 +40,19 @@ public class Announce {
                      sequenceName = SCHEMA + "." + SEQUENCE_NAME)
   private Integer aid;
 
+  /**
+   * The download amount that only this announcement does.<BR>
+   * It is the difference between current and previous announcement.
+   */
   @Column
   private Long download;
 
+  /**
+   * The upload amount that only this announcement does.<BR>
+   * It is the difference between current and previous announcement.
+   */
   @Column
   private Long upload;
-
-  @Column(name = "create_at")
-  private Long createAt;
-
-  @Column(name = "update_at")
-  private Long updateAt;
 
   @JoinColumn(name = "client", referencedColumnName = "cid")
   @ManyToOne
@@ -61,6 +65,20 @@ public class Announce {
   @JoinColumn(name = "user", referencedColumnName = "uid")
   @ManyToOne
   private User user;
+
+  @Column(name = "create_at")
+  private Long createAt;
+
+  @Column(name = "update_at")
+  private Long updateAt;
+
+  @Override
+  public String toString() {
+    return String.format("aid [{}} download [{}] upload [{}]",
+                         this.aid,
+                         this.download,
+                         this.upload);
+  }
 
   @PrePersist
   void onCreate() {
