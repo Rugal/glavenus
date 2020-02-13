@@ -45,6 +45,7 @@ public class User {
 
   /**
    * {@code Ciphered} password with BCrypt algorithm.<BR>
+   * This will be used for user login via API and client.<BR>
    * Plain text will be sent in network transmission and be verified in controller.<BR>
    * The reason is, compromise in network transmission will expose single user password for sure,
    * but compromise service database would breaching all users.
@@ -59,7 +60,8 @@ public class User {
 
   /**
    * Secret for announce authentication in {@code plain text}.<BR>
-   * Ciphered secret with BCrypt algorithm will be created while user downloads torrent.<BR>
+   * This will only be used for client announcement.<BR>
+   * Ciphered secret with BCrypt algorithm will be created while user downloading torrent.<BR>
    * Secret will be automatically and periodically generated, hence compromise does not affect too
    * much.
    */
