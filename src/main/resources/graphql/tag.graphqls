@@ -1,0 +1,4 @@
+type Tag {
+  tid: Int!
+  name: String! @fake(type: colorName)
+}

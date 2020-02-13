@@ -1,0 +1,15 @@
+type Review {
+  rid: Int!
+  content: String! @fake(type: lorem)
+  rate: Int! @fake(type: number, options: {minNumber: 0, maxNumber: 5})
+  author: User!
+  createAt: Int
+  updateAt: Int
+}
+
+type ReviewPage {
+  items: [Review!]! @listLength(min: 0, max: 20)
+  size: Int! @examples(values: [20])
+  index: Int! @examples(values: [0])
+  total: Int! @examples(values: [1])
+}

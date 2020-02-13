@@ -1,4 +1,4 @@
-package ga.rugal.pt.springmvc.controller;
+package ga.rugal.pt.springmvc.graphql;
 
 import java.util.List;
 import java.util.stream.Collectors;

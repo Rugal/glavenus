@@ -1,0 +1,11 @@
+type User {
+  uid: Int!
+  username: String! @fake(type: firstName)
+  email: String! @fake(type: email)
+  download: Int!
+  upload: Int!
+  credit: Int!
+  createAt: Int
+  updateAt: Int
+  status: String!
+}
