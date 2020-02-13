@@ -8,6 +8,7 @@ import ga.rugal.pt.core.entity.User;
 import ga.rugal.pt.core.service.PostService;
 import ga.rugal.pt.core.service.ReviewService;
 import ga.rugal.pt.core.service.UserService;
+import ga.rugal.pt.springmvc.mapper.dto.AuthData;
 import ga.rugal.pt.springmvc.mapper.dto.PostPage;
 import ga.rugal.pt.springmvc.mapper.dto.ReviewPage;
 
@@ -79,5 +80,17 @@ public class RootQuery implements GraphQLQueryResolver {
             .findByPost(optional.get(),
                         PageRequest.of(index, size, Sort.Direction.DESC, "createAt"));
     return new ReviewPage(findAll.getContent(), size, index, findAll.getTotalPages());
+  }
+
+  /**
+   * query { test(data: { uid: 1, username: "Rugal" }) }.
+   *
+   * @param data test
+   *
+   * @return test
+   */
+  public Boolean test(final AuthData data) {
+    LOG.error("uid: [{}]", data.getUid());
+    return null;
   }
 }

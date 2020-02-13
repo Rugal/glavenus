@@ -3,4 +3,10 @@ type Query {
   post(pid: Int!): Post
   postPage(size: Int = 20, index: Int = 0): PostPage!
   reviewPage(pid: Int!, size: Int = 20, index: Int = 0): ReviewPage!
+  test(data: AuthData): Boolean
+}
+
+input AuthData {
+  uid: Int!
+  username: String!
 }
