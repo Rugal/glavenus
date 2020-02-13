@@ -1,0 +1,21 @@
+enum PeerState {
+  UNKNOWN,
+  STARTED,
+  COMPLETED,
+  STOPPED
+}
+
+type Peer {
+  uid: Int!
+  peerId: String!
+  uploaded: Int!
+  downloaded: Int!
+  left: Int!
+  state: PeerState!
+  lastAnnounce: Int!
+}
+
+type Torrent {
+  hash: String! @examples(values: ["5C84616F2E28D03BF9C127D7BCCAA4CF0FD57B43", "A12F4E3EFEDC35937670811147A076BC596176CA"])
+  peers: [Peer]! @listLength(min: 0, max: 5)
+}

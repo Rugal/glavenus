@@ -1,6 +1,10 @@
 type Query {
   user(uid: Int!): User
+
   post(pid: Int!): Post
   postPage(size: Int = 20, index: Int = 0): PostPage!
+
   reviewPage(pid: Int!, size: Int = 20, index: Int = 0): ReviewPage!
+
+  torrent(hash: String): Torrent
 }

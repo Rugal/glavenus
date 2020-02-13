@@ -162,7 +162,7 @@ public class TrackerController extends TrackerService {
                                 final TrackedPeer peer,
                                 final Map<String, BeValue> parameters) {
     // Get user, guarantee to have user so do not check emptiness
-    final User user = this.authenticate(parameters).get();
+    final User user = this.userService.getDao().findById(peer.getUid()).get();
     // Check post existence
     final Optional<Post> optionalPost = this.postService.getDao()
             .findByHash(torrent.getHexInfoHash());
