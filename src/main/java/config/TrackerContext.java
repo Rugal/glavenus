@@ -16,6 +16,7 @@ import com.turn.ttorrent.tracker.TrackerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -39,6 +40,7 @@ public class TrackerContext {
   }
 
   @Bean
+  @ConditionalOnMissingBean
   public ConcurrentMap<String, TrackedTorrent> torrents() {
     return new ConcurrentHashMap<>();
   }
