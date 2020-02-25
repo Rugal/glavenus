@@ -3,6 +3,8 @@ package ga.rugal.pt.springmvc.graphql;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentMap;
 
+import config.Constant;
+
 import ga.rugal.pt.core.entity.Post;
 import ga.rugal.pt.core.entity.Review;
 import ga.rugal.pt.core.entity.User;
@@ -64,7 +66,7 @@ public class RootQuery implements GraphQLQueryResolver {
    */
   public PostPage postPage(final int size, final int index) {
     final Page<Post> findAll = this.postService.getDao().findAll(PageRequest
-            .of(index, size, Sort.Direction.DESC, "createAt"));
+            .of(index, size, Sort.Direction.DESC, Constant.CREATE_AT));
     return new PostPage(findAll.getContent(), size, index, findAll.getTotalPages());
   }
 
@@ -85,7 +87,7 @@ public class RootQuery implements GraphQLQueryResolver {
 
     final Page<Review> findAll = this.reviewService.getDao()
             .findByPost(optional.get(),
-                        PageRequest.of(index, size, Sort.Direction.DESC, "createAt"));
+                        PageRequest.of(index, size, Sort.Direction.DESC, Constant.CREATE_AT));
     return new ReviewPage(findAll.getContent(), size, index, findAll.getTotalPages());
   }
 

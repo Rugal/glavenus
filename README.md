@@ -5,6 +5,8 @@
 [![CircleCI](https://circleci.com/gh/Rugal/glavenus.svg?style=svg)](https://circleci.com/gh/Rugal/glavenus)
 [![codecov](https://codecov.io/gh/Rugal/glavenus/branch/master/graph/badge.svg)](https://codecov.io/gh/Rugal/glavenus)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FRugal%2Fglavenus.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FRugal%2Fglavenus?ref=badge_shield)
+[![Known Vulnerabilities](https://snyk.io/test/github/Rugal/glavenus/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/Rugal/glavenus?targetFile=pom.xml)
+
 
 ## Start Local Environment
 
