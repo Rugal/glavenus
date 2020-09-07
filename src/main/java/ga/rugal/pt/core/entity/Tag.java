@@ -3,14 +3,12 @@ package ga.rugal.pt.core.entity;
 import static config.SystemDefaultProperty.SCHEMA;
 
 import java.time.Instant;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
@@ -43,9 +41,6 @@ public class Tag {
   @Size(max = 50)
   @Column(length = 50)
   private String name;
-
-  @OneToMany(mappedBy = "tag")
-  private List<PostTag> postTags;
 
   @Column(name = "create_at")
   private Long createAt;

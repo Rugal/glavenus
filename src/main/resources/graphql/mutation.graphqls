@@ -1,0 +1,11 @@
+type Mutation {
+  createTag(input: NewTag!): Tag
+  attach(pid: Int!, tid: Int!): PostTag
+  detach(ptid: Int!): Boolean
+
+  createPost(input: NewPost!): Post
+  deletePost(pid: Int!): Boolean
+  updatePost(pid: Int!, input: NewPost!): Post
+
+  createUser(input: NewUser!): User
+}

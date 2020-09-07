@@ -2,10 +2,27 @@ version: '3.1'
 
 services:
   db:
-    container_name: "postgres"
+    container_name: postgres
     image: postgres:12-alpine
     restart: always
     ports:
-      - "5432:5432"
+      - 5432:5432
     environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 1s
+      timeout: 1s
+      retries: 5
+
+  flyway:
+    container_name: flyway
+    image: flyway/flyway
+    command: -configFiles=/flyway/conf/local.properties clean migrate
+    volumes:
+      - ${PWD}/configuration/db:/flyway/conf
+      - ${PWD}/configuration/db/migration:/flyway/sql
+    depends_on:
+      - db

@@ -16,7 +16,7 @@ jobs:
       - restore_cache:
           key: v1-private-torrent-{{ checksum "pom.xml" }}
       - run: mvn dependency:go-offline
-      - run: mvn -Dflyway.configFile=configuration/db/${SPRING_PROFILES_ACTIVE}.properties flyway:clean flyway:migrate
+      - run: mvn -Dflyway.configFiles=configuration/db/${SPRING_PROFILES_ACTIVE}.properties flyway:clean flyway:migrate
       - run: mvn clean -Dskip.surefire.tests=false -D=skip.failsafe.tests=false verify
       - run:
           name: Save test results

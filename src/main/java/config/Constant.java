@@ -53,4 +53,6 @@ public interface Constant {
   String PEER_ID = "peer_id";
 
   String CREATE_AT = "createAt";
+
+  String CODE = "code";
 }

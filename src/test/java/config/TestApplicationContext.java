@@ -9,7 +9,6 @@ import java.util.concurrent.ConcurrentMap;
 
 import ga.rugal.pt.core.entity.Post;
 import ga.rugal.pt.core.entity.User;
-import ga.rugal.pt.openapi.model.NewPostDto;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,21 +28,21 @@ import org.springframework.mock.web.MockMultipartFile;
  */
 @Configuration
 public class TestApplicationContext {
-  
+
   private static final String TORRENT_PATH = "configuration/torrent";
-  
+
   @Bean
   @ConditionalOnMissingBean
   public String host(final @Value("${server.host:localhost}") String host) {
     return host;
   }
-  
+
   @Bean
   @ConditionalOnMissingBean
   public Integer port(final @Value("${server.port:6969}") int port) {
     return port;
   }
-  
+
   @Bean
   @ConditionalOnMissingBean
   public ObjectMapper objectMapper() {
@@ -72,22 +71,14 @@ public class TestApplicationContext {
   @Bean
   public File torrentFile() {
     return new File(TORRENT_PATH)
-            .listFiles((File dir, String fileName) -> fileName.startsWith("Junit"))[0];
+      .listFiles((File dir, String fileName) -> fileName.startsWith("Junit"))[0];
   }
-  
+
   @Bean
   public Torrent torrent(final File torrentFile) throws IOException, NoSuchAlgorithmException {
     return Torrent.load(torrentFile);
   }
-  
-  @Bean
-  public NewPostDto newPostDto(final Faker faker) {
-    final NewPostDto post = new NewPostDto();
-    post.setContent(faker.hitchhikersGuideToTheGalaxy().location());
-    post.setTitle(faker.name().name());
-    return post;
-  }
-  
+
   @Bean
   public Post post(final Faker faker, final Torrent torrent) {
     final Post post = new Post();
@@ -100,7 +91,7 @@ public class TestApplicationContext {
     post.setEnable(true);
     return post;
   }
-  
+
   @Bean
   public MockMultipartFile mmf(final File torrentFile) throws IOException {
     return new MockMultipartFile("file",
@@ -108,7 +99,7 @@ public class TestApplicationContext {
                                  Constant.BITTORRENT_MIME,
                                  new FileInputStream(torrentFile));
   }
-  
+
   @Bean
   public User user(final Faker faker) {
     final User user = new User();

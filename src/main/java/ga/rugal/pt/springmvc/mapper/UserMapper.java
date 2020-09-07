@@ -1,8 +1,8 @@
 package ga.rugal.pt.springmvc.mapper;
 
+import ga.rugal.glavenus.graphql.NewUserDto;
+import ga.rugal.glavenus.graphql.UserDto;
 import ga.rugal.pt.core.entity.User;
-import ga.rugal.pt.openapi.model.NewUserDto;
-import ga.rugal.pt.openapi.model.UserDto;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.mapstruct.Mapper;
@@ -17,7 +17,7 @@ import org.mapstruct.factory.Mappers;
 @SuppressFBWarnings("UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD")
 public interface UserMapper {
 
-  UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+  UserMapper I = Mappers.getMapper(UserMapper.class);
 
   User to(NewUserDto newUserDto);
 

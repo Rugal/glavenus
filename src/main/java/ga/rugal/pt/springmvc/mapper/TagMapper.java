@@ -1,8 +1,8 @@
 package ga.rugal.pt.springmvc.mapper;
 
+import ga.rugal.glavenus.graphql.NewTagDto;
+import ga.rugal.glavenus.graphql.TagDto;
 import ga.rugal.pt.core.entity.Tag;
-import ga.rugal.pt.openapi.model.NewTagDto;
-import ga.rugal.pt.openapi.model.TagDto;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.mapstruct.Mapper;
@@ -17,7 +17,7 @@ import org.mapstruct.factory.Mappers;
 @SuppressFBWarnings("UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD")
 public interface TagMapper {
 
-  TagMapper INSTANCE = Mappers.getMapper(TagMapper.class);
+  TagMapper I = Mappers.getMapper(TagMapper.class);
 
   Tag to(NewTagDto newTagDto);
 

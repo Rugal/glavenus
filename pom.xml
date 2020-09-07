@@ -5,13 +5,13 @@
   <parent>
     <groupId>ga.rugal</groupId>
     <artifactId>parent</artifactId>
-    <version>1.8.0</version>
+    <version>1.11.1-SNAPSHOT</version>
   </parent>
 
-  <artifactId>pt</artifactId>
+  <artifactId>glavenus</artifactId>
   <version>1.0.0</version>
-  <name>Private Tracker</name>
-  <description>Java based Private Tracker</description>
+  <name>Private Tracker Backend Service</name>
+  <description>Java based Private Tracker Backend Service</description>
   <url>https://rug.al</url>
 
   <scm>
@@ -32,6 +32,7 @@
     <skip.failsafe.tests>true</skip.failsafe.tests>
     <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
     <openapi.codegen.skipIfSpecIsUnchanged>true</openapi.codegen.skipIfSpecIsUnchanged>
+    <flyway.schema>pt</flyway.schema>
     <!--
       dependency
     -->
@@ -179,6 +180,17 @@
       <artifactId>jjwt-jackson</artifactId>
       <version>${jsonwebtoken.version}</version>
     </dependency>
+    <!--
+        JEP
+    -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+    </dependency>
     <!-- Auto Append -->
   </dependencies>
 
@@ -235,15 +247,19 @@
         <executions>
           <execution>
             <id>openapi-codegen-server</id>
-          </execution>
-          <execution>
-            <id>openapi-codegen-client</id>
             <configuration>
-              <skip>true</skip>
-              <generatorName>spring-boot-feign</generatorName>
+              <skip>false</skip>
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <!-- graphql codegen -->
+      <plugin>
+        <groupId>io.github.kobylynskyi</groupId>
+        <artifactId>graphql-codegen-maven-plugin</artifactId>
+        <configuration>
+          <jsonConfigurationFile>configuration/graphql-codegen.json</jsonConfigurationFile>
+        </configuration>
       </plugin>
     </plugins>
   </build>

@@ -1,3 +1,9 @@
+input NewUser {
+  email: String! @fake(type: email)
+  username: String! @fake(type: firstName)
+  password: String!
+}
+
 type User {
   uid: Int!
   username: String! @fake(type: firstName)

@@ -3,14 +3,12 @@ package ga.rugal.pt.core.entity;
 import static config.SystemDefaultProperty.SCHEMA;
 
 import java.time.Instant;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
@@ -49,9 +47,6 @@ public class Client {
 
   @Column
   private Boolean enable;
-
-  @OneToMany(mappedBy = "client")
-  private List<Announce> announces;
 
   @Column(name = "create_at")
   private Long createAt;

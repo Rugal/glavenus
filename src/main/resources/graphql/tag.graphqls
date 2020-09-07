@@ -1,4 +1,14 @@
+input NewTag {
+  name: String!
+}
+
 type Tag {
   tid: Int!
   name: String! @fake(type: colorName)
+}
+
+type PostTag {
+  ptid: Int!
+  post: Post!
+  tag: Tag! 
 }

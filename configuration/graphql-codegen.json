@@ -1,0 +1,16 @@
+{
+  "fieldsWithResolvers": [
+    "Post.author",
+    "Post.tags",
+    "Review.author",
+    "PostTag.tag",
+    "PostTag.post"
+  ],
+  "apiInterfaceStrategy": "DO_NOT_GENERATE",
+  "customTypesMapping": {
+    "Peer.uploaded": "long",
+    "Peer.downloaded": "long",
+    "Peer.left": "long",
+    "Peer.lastAnnounce": "long"
+  }
+}

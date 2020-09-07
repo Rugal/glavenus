@@ -2,12 +2,11 @@ package ga.rugal.pt.springmvc.mapper;
 
 import java.util.List;
 
-import ga.rugal.pt.springmvc.graphql.type.torrent.Peer;
+import ga.rugal.glavenus.graphql.PeerDto;
 
 import com.turn.ttorrent.tracker.TrackedPeer;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -19,10 +18,29 @@ import org.mapstruct.factory.Mappers;
 @SuppressFBWarnings("UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD")
 public interface PeerMapper {
 
-  PeerMapper INSTANCE = Mappers.getMapper(PeerMapper.class);
+  PeerMapper I = Mappers.getMapper(PeerMapper.class);
 
-  @Mapping(source = "p.hexPeerId", target = "peerId")
-  Peer to(TrackedPeer p);
+  /**
+   * Map TrackedPeer to PeerDto.
+   *
+   * @param p tracked peer
+   *
+   * @return peer DTO
+   */
+  default PeerDto to(TrackedPeer p) {
+    if (null == p) {
+      return null;
+    }
+    final PeerDto d = new PeerDto();
+    d.setDownloaded(p.getDownloaded());
+    d.setUploaded(p.getUploaded());
+    d.setLastAnnounce(p.getLastAnnounce().getTime() / 1000);
+    d.setLeft(p.getLeft());
+    d.setPeerId(p.getHexPeerId());
+    d.setUid(p.getUid());
+    d.setState(PeerStateMapper.I.from(p.getState()));
+    return d;
+  }
 
-  List<Peer> to(List<TrackedPeer> ps);
+  List<PeerDto> to(List<TrackedPeer> ps);
 }

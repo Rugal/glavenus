@@ -1,6 +1,6 @@
 package ga.rugal.pt.springmvc.mapper;
 
-import ga.rugal.pt.springmvc.graphql.type.torrent.Torrent;
+import ga.rugal.glavenus.graphql.TorrentDto;
 
 import com.google.common.collect.Lists;
 import com.turn.ttorrent.tracker.TrackedTorrent;
@@ -17,7 +17,7 @@ import org.mapstruct.factory.Mappers;
 @SuppressFBWarnings("UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD")
 public interface TorrentMapper {
 
-  TorrentMapper INSTANCE = Mappers.getMapper(TorrentMapper.class);
+  TorrentMapper I = Mappers.getMapper(TorrentMapper.class);
 
   /**
    * Map TrackedTorrent to DTO Torrent for GraphQL.
@@ -26,10 +26,11 @@ public interface TorrentMapper {
    *
    * @return DTO Torrent object
    */
-  default Torrent to(final TrackedTorrent t) {
-    final Torrent torrent = new Torrent();
-    torrent.setHash(t.getHexInfoHash());
-    torrent.setPeers(PeerMapper.INSTANCE.to(Lists.newArrayList(t.getPeers().values())));
-    return torrent;
+  default TorrentDto from(final TrackedTorrent t) {
+    if (null == t) {
+      return null;
+    }
+    return new TorrentDto(t.getHexInfoHash(),
+                          PeerMapper.I.to(Lists.newArrayList(t.getPeers().values())));
   }
 }

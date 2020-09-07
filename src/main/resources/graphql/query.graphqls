@@ -1,10 +1,14 @@
 type Query {
-  user(uid: Int!): User
+  getPost(pid: Int!): Post
+  getPostPage(size: Int = 20, index: Int = 0): PostPage!
 
-  post(pid: Int!): Post
-  postPage(size: Int = 20, index: Int = 0): PostPage!
+  getTag(tid: Int!): Tag
+  findTagByName(name: String!): [Tag]
 
-  reviewPage(pid: Int!, size: Int = 20, index: Int = 0): ReviewPage!
+  getReviewPage(pid: Int!, size: Int = 20, index: Int = 0): ReviewPage!
 
-  torrent(hash: String): Torrent
+  getUser(uid: Int!): User
+  login(email: String!, password: String!): String
+
+  getTorrent(hash: String!): Torrent
 }
