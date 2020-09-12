@@ -1,15 +1,20 @@
 package ga.rugal.pt.springmvc.graphql;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import ga.rugal.glavenus.graphql.PostDto;
 import ga.rugal.glavenus.graphql.PostResolver;
-import ga.rugal.glavenus.graphql.PostTagDto;
+import ga.rugal.glavenus.graphql.TagDto;
 import ga.rugal.glavenus.graphql.UserDto;
-import ga.rugal.pt.springmvc.mapper.PostMapper;
+import ga.rugal.pt.core.entity.Post;
+import ga.rugal.pt.core.service.PostService;
+import ga.rugal.pt.core.service.PostTagService;
+import ga.rugal.pt.springmvc.mapper.TagMapper;
 import ga.rugal.pt.springmvc.mapper.UserMapper;
 
 import com.coxautodev.graphql.tools.GraphQLResolver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -20,13 +25,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class PostFieldResolver implements GraphQLResolver<PostDto>, PostResolver {
 
+  @Autowired
+  private PostService postService;
+
+  @Autowired
+  private PostTagService postTagService;
+
   @Override
   public UserDto author(final PostDto postDto) throws Exception {
-    return UserMapper.I.from(PostMapper.I.to(postDto).getAuthor());
+    final Post p = this.postService.getDao().findById(postDto.getPid()).get();
+    return UserMapper.I.from(p.getAuthor());
   }
 
   @Override
-  public List<PostTagDto> tags(final PostDto postDto) throws Exception {
-    throw new UnsupportedOperationException("Not supported yet.");
+  public List<TagDto> tags(final PostDto postDto) throws Exception {
+    final Post p = this.postService.getDao().findById(postDto.getPid()).get();
+    return this.postTagService.getDao().findByPost(p).stream()
+      .map(pt -> TagMapper.I.from(pt.getTag()))
+      .collect(Collectors.toList());
   }
 }
