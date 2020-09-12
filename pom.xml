@@ -37,7 +37,7 @@
       dependency
     -->
     <ttorrent.version>1.2.0-SNAPSHOT</ttorrent.version>
-    <jsonwebtoken.version>0.10.7</jsonwebtoken.version>
+    <jsonwebtoken.version>0.11.2</jsonwebtoken.version>
     <jbcrypt.version>0.4</jbcrypt.version>
   </properties>
 
