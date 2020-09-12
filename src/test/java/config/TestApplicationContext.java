@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import ga.rugal.pt.core.entity.Client;
 import ga.rugal.pt.core.entity.Post;
 import ga.rugal.pt.core.entity.User;
 
@@ -109,5 +110,15 @@ public class TestApplicationContext {
     user.setPassword(BCrypt.hashpw("1", BCrypt.gensalt()));
     user.setEmail(faker.internet().emailAddress());
     return user;
+  }
+
+  @Bean
+  public Client client(final Faker faker) {
+    final Client client = new Client();
+    client.setCid(1);
+    client.setName(faker.name().firstName());
+    client.setEnable(true);
+    client.setVersion("1.0.0");
+    return client;
   }
 }
