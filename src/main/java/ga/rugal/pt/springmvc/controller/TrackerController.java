@@ -63,7 +63,7 @@ public class TrackerController extends TrackerService {
       final int uid = parameters.get(Constant.UID).getInt();
       //password in plaintext
       final String secret = parameters.get(Constant.SECRET).getString();
-      if (this.userService.canAnnounce(uid, secret)) {
+      if (this.userService.announce(uid, secret)) {
         LOG.info("Matched uid [{}] and secret [{}]", uid, secret);
         return this.userService.getDao().findById(uid);
       }

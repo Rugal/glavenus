@@ -26,7 +26,7 @@ public interface UserService extends BaseService<UserDao> {
    *
    * @return {@code true} only if user exists and secret matches, otherwise return {@code false}
    */
-  boolean canAnnounce(int uid, @Nonnull String secret);
+  boolean announce(int uid, @Nonnull String secret);
 
   /**
    * Login user with uid and password, and return JWT if everything looks good.

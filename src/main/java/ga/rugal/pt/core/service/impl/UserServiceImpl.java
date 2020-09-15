@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService {
       return false;
     }
     try {
+      // notice password here is already encrypted
       return BCrypt.checkpw(password, optional.get().getPassword());
     } catch (final IllegalArgumentException e) {
       LOG.error("Unable to check with BCrypt", e);
@@ -60,12 +61,13 @@ public class UserServiceImpl implements UserService {
    * {@inheritDoc}
    */
   @Override
-  public boolean canAnnounce(final int uid, final @Nonnull String secret) {
+  public boolean announce(final int uid, final @Nonnull String secret) {
     final Optional<User> optional = this.dao.findById(uid);
     if (optional.isEmpty()) {
       return false;
     }
     try {
+      // natuco secret here
       return BCrypt.checkpw(optional.get().getSecret(), secret);
     } catch (final IllegalArgumentException e) {
       LOG.error("Unable to check with BCrypt", e);

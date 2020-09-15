@@ -1,17 +1,18 @@
 input NewPost {
-  title: String! @fake(type: fullName)
-  content: String! @fake(type: lorem)
+  title: String! 
+  content: String! 
 }
 
 type Post {
   pid: Int!
-  title: String! @fake(type: fullName)
-  content: String! @fake(type: lorem)
+  title: String! 
+  content: String! 
   enable: Boolean!
   hash: String! @examples(values: ["5C84616F2E28D03BF9C127D7BCCAA4CF0FD57B43", "A12F4E3EFEDC35937670811147A076BC596176CA"])
   size: Int!
   author: User!
   tags: [Tag!]! @listLength(min: 0, max: 5)
+  reviews: [Review!]! @listLength(min: 0, max: 8)
   rate: Float! @fake(type: number, options: {minNumber: 0, maxNumber: 5})
   createAt: Int
   updateAt: Int

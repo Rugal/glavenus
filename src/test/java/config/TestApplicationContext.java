@@ -108,6 +108,7 @@ public class TestApplicationContext {
     user.setCredit(0);
     user.setStatus(0);
     user.setPassword(BCrypt.hashpw("1", BCrypt.gensalt()));
+    user.setSecret("1");
     user.setEmail(faker.internet().emailAddress());
     return user;
   }

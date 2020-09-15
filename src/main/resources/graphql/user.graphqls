@@ -1,6 +1,6 @@
 input NewUser {
-  email: String! @fake(type: email)
-  username: String! @fake(type: firstName)
+  email: String! 
+  username: String! 
   password: String!
 }
 
