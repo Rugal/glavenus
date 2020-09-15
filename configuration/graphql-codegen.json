@@ -12,5 +12,6 @@
     "Peer.downloaded": "long",
     "Peer.left": "long",
     "Peer.lastAnnounce": "long"
-  }
+  },
+  "modelNameSuffix": "Dto"
 }

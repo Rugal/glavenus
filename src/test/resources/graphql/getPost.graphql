@@ -1,0 +1,6 @@
+query {
+  getPost(pid: 1) {
+    pid 
+    title
+  }
+}

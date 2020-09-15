@@ -3,8 +3,13 @@ package config;
 import ga.rugal.pt.core.dao.ClientDao;
 import ga.rugal.pt.core.dao.PostDao;
 import ga.rugal.pt.core.dao.UserDao;
+import ga.rugal.pt.core.service.AnnounceService;
 import ga.rugal.pt.core.service.ClientService;
+import ga.rugal.pt.core.service.JwtService;
 import ga.rugal.pt.core.service.PostService;
+import ga.rugal.pt.core.service.PostTagService;
+import ga.rugal.pt.core.service.ReviewService;
+import ga.rugal.pt.core.service.TagService;
 import ga.rugal.pt.core.service.UserService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,5 +66,35 @@ public class UnitTestApplicationContext {
   @Scope("prototype")
   public UserService userService() {
     return Mockito.mock(UserService.class);
+  }
+
+  @Bean
+  @Scope("prototype")
+  public TagService tagService() {
+    return Mockito.mock(TagService.class);
+  }
+
+  @Bean
+  @Scope("prototype")
+  public PostTagService postTagService() {
+    return Mockito.mock(PostTagService.class);
+  }
+
+  @Bean
+  @Scope("prototype")
+  public JwtService jwtService() {
+    return Mockito.mock(JwtService.class);
+  }
+
+  @Bean
+  @Scope("prototype")
+  public AnnounceService announceService() {
+    return Mockito.mock(AnnounceService.class);
+  }
+
+  @Bean
+  @Scope("prototype")
+  public ReviewService reviewService() {
+    return Mockito.mock(ReviewService.class);
   }
 }
