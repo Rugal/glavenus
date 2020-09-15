@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import ga.rugal.pt.core.entity.Client;
 import ga.rugal.pt.core.entity.Post;
+import ga.rugal.pt.core.entity.Tag;
 import ga.rugal.pt.core.entity.User;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -91,6 +92,14 @@ public class TestApplicationContext {
     post.setTorrent(torrent.getEncoded());
     post.setEnable(true);
     return post;
+  }
+
+  @Bean
+  public Tag tag(final Faker faker) {
+    final Tag tag = new Tag();
+    tag.setTid(1);
+    tag.setName(faker.funnyName().name());
+    return tag;
   }
 
   @Bean

@@ -8,8 +8,11 @@ import java.util.Optional;
 
 import ga.rugal.UnitTestBase;
 import ga.rugal.pt.core.dao.PostDao;
+import ga.rugal.pt.core.dao.TagDao;
 import ga.rugal.pt.core.entity.Post;
+import ga.rugal.pt.core.entity.Tag;
 import ga.rugal.pt.core.service.PostService;
+import ga.rugal.pt.core.service.TagService;
 
 import com.graphql.spring.boot.test.GraphQLResponse;
 import com.graphql.spring.boot.test.GraphQLTest;
@@ -32,6 +35,15 @@ public class QueryTest extends UnitTestBase {
   @Autowired
   private Post post;
 
+  @Autowired
+  private Tag tag;
+
+  @MockBean
+  private TagDao tagDao;
+
+  @MockBean
+  private TagService tagService;
+
   @MockBean
   private PostDao postDao;
 
@@ -42,7 +54,11 @@ public class QueryTest extends UnitTestBase {
   public void setUp() {
     when(this.postService.getDao()).thenReturn(this.postDao);
 
+    when(this.tagService.getDao()).thenReturn(this.tagDao);
+
     when(this.postDao.findById(any())).thenReturn(Optional.of(this.post));
+
+    when(this.tagDao.findById(any())).thenReturn(Optional.of(this.tag));
   }
 
   @Test
@@ -65,5 +81,27 @@ public class QueryTest extends UnitTestBase {
     Assertions.assertTrue(r.isOk());
     Assertions.assertEquals(this.post.getTitle(), r.get("$.data.getPost.title"));
     verify(this.postDao).findById(any());
+  }
+
+  @Test
+  public void getTag_null() throws Exception {
+    when(this.tagDao.findById(any())).thenReturn(Optional.empty());
+
+    final GraphQLResponse r = this.template.postForResource("graphql/getTag.graphql");
+
+    Assertions.assertNotNull(r);
+    Assertions.assertTrue(r.isOk());
+    Assertions.assertNull(r.get("$.data.getTag"));
+    verify(this.tagDao).findById(any());
+  }
+
+  @Test
+  public void getTag() throws Exception {
+    final GraphQLResponse r = this.template.postForResource("graphql/getTag.graphql");
+
+    Assertions.assertNotNull(r);
+    Assertions.assertTrue(r.isOk());
+    Assertions.assertEquals(this.tag.getName(), r.get("$.data.getTag.name"));
+    verify(this.tagDao).findById(any());
   }
 }

@@ -1,0 +1,6 @@
+query {
+  getTag(tid: 1) {
+    tid 
+    name
+  }
+}
