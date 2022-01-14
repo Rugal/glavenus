@@ -37,7 +37,7 @@ public class JwtServiceImpl implements JwtService {
   /**
    * Calculate expiration date by adding [application.jwt.expiration + now].
    *
-   * @return
+   * @return get expiration date
    */
   private Date getExpiration(final int exp) {
     final Calendar c = Calendar.getInstance();
@@ -51,7 +51,7 @@ public class JwtServiceImpl implements JwtService {
    *
    * @param user database user object
    *
-   * @return
+   * @return get user information map
    */
   private Map<String, Object> getUserMap(final User user) {
     return Map.of(Constant.UID, user.getUid());

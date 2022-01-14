@@ -5,7 +5,7 @@
   <parent>
     <groupId>ga.rugal</groupId>
     <artifactId>parent</artifactId>
-    <version>1.11.1-SNAPSHOT</version>
+    <version>1.13.1</version>
   </parent>
 
   <artifactId>glavenus</artifactId>
@@ -36,8 +36,7 @@
     <!--
       dependency
     -->
-    <ttorrent.version>1.2.0-SNAPSHOT</ttorrent.version>
-    <jsonwebtoken.version>0.10.7</jsonwebtoken.version>
+    <ttorrent.version>1.2.0</ttorrent.version>
     <jbcrypt.version>0.4</jbcrypt.version>
   </properties>
 
@@ -123,15 +122,19 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.mapstruct</groupId>
+      <artifactId>mapstruct</artifactId>
+    </dependency>
     <!-- 
       graphql 
     -->
     <dependency>
-      <groupId>com.graphql-java</groupId>
+      <groupId>com.graphql-java-kickstart</groupId>
       <artifactId>graphql-java-tools</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.graphql-java</groupId>
+      <groupId>com.graphql-java-kickstart</groupId>
       <artifactId>graphql-spring-boot-starter</artifactId>
     </dependency>
     <!-- UI -->
@@ -145,7 +148,7 @@
     </dependency>
     <!-- test -->
     <dependency>
-      <groupId>com.graphql-java</groupId>
+      <groupId>com.graphql-java-kickstart</groupId>
       <artifactId>graphql-spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
@@ -169,23 +172,20 @@
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-api</artifactId>
-      <version>${jsonwebtoken.version}</version>
     </dependency>
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-impl</artifactId>
-      <version>${jsonwebtoken.version}</version>
     </dependency>
     <dependency>
       <groupId>io.jsonwebtoken</groupId>
       <artifactId>jjwt-jackson</artifactId>
-      <version>${jsonwebtoken.version}</version>
     </dependency>
     <!--
         JEP
     -->
     <dependency>
-      <groupId>org.hibernate</groupId>
+      <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
     </dependency>
     <dependency>
@@ -193,6 +193,10 @@
       <artifactId>validation-api</artifactId>
     </dependency>
     <!-- Auto Append -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
@@ -258,6 +262,25 @@
       <plugin>
         <groupId>io.github.kobylynskyi</groupId>
         <artifactId>graphql-codegen-maven-plugin</artifactId>
+      </plugin>
+      <!-- compiler -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${lombok.version}</version>
+            </path>
+            <path>
+              <groupId>org.mapstruct</groupId>
+              <artifactId>mapstruct-processor</artifactId>
+              <version>${mapstruct.version}</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
       </plugin>
     </plugins>
   </build>

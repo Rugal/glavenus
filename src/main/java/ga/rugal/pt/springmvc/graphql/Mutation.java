@@ -29,7 +29,7 @@ import ga.rugal.pt.springmvc.mapper.PostTagMapper;
 import ga.rugal.pt.springmvc.mapper.TagMapper;
 import ga.rugal.pt.springmvc.mapper.UserMapper;
 
-import com.coxautodev.graphql.tools.GraphQLMutationResolver;
+import graphql.kickstart.tools.GraphQLMutationResolver;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

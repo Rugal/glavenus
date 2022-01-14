@@ -4,7 +4,7 @@ import ga.rugal.glavenus.graphql.ReviewDto;
 import ga.rugal.glavenus.graphql.ReviewResolver;
 import ga.rugal.glavenus.graphql.UserDto;
 
-import com.coxautodev.graphql.tools.GraphQLResolver;
+import graphql.kickstart.tools.GraphQLResolver;
 import org.springframework.stereotype.Component;
 
 /**

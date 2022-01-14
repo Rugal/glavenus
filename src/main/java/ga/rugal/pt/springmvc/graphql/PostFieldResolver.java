@@ -13,7 +13,7 @@ import ga.rugal.pt.core.service.PostTagService;
 import ga.rugal.pt.springmvc.mapper.TagMapper;
 import ga.rugal.pt.springmvc.mapper.UserMapper;
 
-import com.coxautodev.graphql.tools.GraphQLResolver;
+import graphql.kickstart.tools.GraphQLResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -117,7 +117,7 @@ public class PostController implements PostApi {
    * @param uid    User id
    * @param secret secret in plain text
    *
-   * @return
+   * @return the announce URL
    */
   private String assembleAnnounceUrl(final int uid, final String secret) {
     return String.format(Constant.ANNOUNCE_TEMPLATE_URL,

@@ -55,7 +55,7 @@ public class TrackerController extends TrackerService {
    *
    * @param parameters
    *
-   * @return
+   * @return authenticate user identity
    */
   private Optional<User> authenticate(final Map<String, BeValue> parameters) {
     try {

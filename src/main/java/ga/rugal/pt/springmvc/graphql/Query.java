@@ -32,8 +32,8 @@ import ga.rugal.pt.springmvc.mapper.UserMapper;
 import ga.rugal.pt.springmvc.mapper.dto.PostPage;
 import ga.rugal.pt.springmvc.mapper.dto.ReviewPage;
 
-import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import com.turn.ttorrent.tracker.TrackedTorrent;
+import graphql.kickstart.tools.GraphQLQueryResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -91,7 +91,7 @@ public class ApplicationContext {
   /**
    * Create data source.
    *
-   * @return
+   * @return data source object
    */
   @Bean(destroyMethod = "close")
   public DataSource dataSource() {
@@ -131,7 +131,7 @@ public class ApplicationContext {
    * @param dataSource data source
    * @param hp
    *
-   * @return
+   * @return entity manager factory
    */
   @Bean
   public LocalContainerEntityManagerFactoryBean entityManagerFactory(final DataSource dataSource,
@@ -157,7 +157,7 @@ public class ApplicationContext {
    *
    * @param emf entity manager
    *
-   * @return
+   * @return transaction manager
    */
   @Bean
   public PlatformTransactionManager transactionManager(
